@@ -10,7 +10,8 @@ import Footer from './components/Footer';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getInformation } from './redux/actions';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
+        <ToastContainer />
     </Router>
   );
 }

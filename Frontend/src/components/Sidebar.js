@@ -1,8 +1,10 @@
 import './Sidebar.css';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 function Sidebar({click,show}) {
+  const cart = useSelector(state => state.cart);
   const sideDrawerClass = ["sidedrawer"]
   if (show) {
     sideDrawerClass.push("show")
@@ -15,7 +17,7 @@ function Sidebar({click,show}) {
           <Link to="/cart">
             <i className="fas fa-shopping-cart"></i>
             <span>
-              Cart <span className='sidedrawer__cartbadge'>0</span>
+              Cart <span className='sidedrawer__cartbadge'>{cart?.length}</span>
             </span>
           </Link>
         </li>

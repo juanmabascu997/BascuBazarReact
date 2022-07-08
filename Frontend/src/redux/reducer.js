@@ -1,4 +1,4 @@
-import {GET_ALL_PRODUCTS, GET_A_PRODUCT, GET_ALL_INFORMATION, ADD_CART, CLEAR_CART} from "./actions";
+import {GET_ALL_PRODUCTS, GET_A_PRODUCT, GET_ALL_INFORMATION, ADD_CART, CLEAR_CART, REMOVE_ONE_FROM_CART} from "./actions";
 
 
 const initialState = {
@@ -30,6 +30,11 @@ export default function rootReducer(state = initialState, payload) {
             return {
             ...state,
             cart: payload.payload
+            }
+        case REMOVE_ONE_FROM_CART:
+            return {
+            ...state,
+            cart: state.cart.filter(item => item.name !== payload.payload) 
             }
         case CLEAR_CART:
             return {

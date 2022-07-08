@@ -69,3 +69,15 @@
     color: #222222;
 }
 
+@media (max-width: 916px){
+    .product{
+        width: 90%;
+    }
+}
+
+@media (max-width: 671px){
+    .product{
+        width: 85%;
+    }
+}
+

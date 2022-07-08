@@ -2,19 +2,35 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addCart } from '../redux/actions';
 import './Product.css';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Product({product}) {
   const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
 
-  const addToCarrito = () => {
+  const addToCarrito = (e) => {
+    e.preventDefault();
     if(cart){
         let repetido = cart.filter(e => e.name == product.name)
         if(repetido.length > 0){
-            alert("The item is already in the cart")
+          toast.error("El producto ya esta en el carrito", {
+            position: "top-left",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true}
+          );
         } else{
-            alert("Item added to shopping cart")
+            toast.success("Producto agregado al carrito", {
+              position: "top-left",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true}
+            );
             addCart([...new Set([...cart, product])]).then((action) => {
                 dispatch(action);
               });
