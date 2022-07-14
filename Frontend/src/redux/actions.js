@@ -6,6 +6,7 @@ export const GET_ALL_INFORMATION = "GET_ALL_INFORMATION";
 export const ADD_CART = "ADD_CART";
 export const CLEAR_CART = "CLEAR_CART";
 export const REMOVE_ONE_FROM_CART = "REMOVE_ONE_FROM_CART";
+export const SET_QUANTITY = "SET_QUANTITY";
 
 export async function getAllProducts() {
     return async function (dispatch) {
@@ -59,7 +60,6 @@ export async function addCart(element) {
 }
 
 export async function removeOneFromCart(element) {
-  console.log(element)
   return async function (dispatch) {
     return dispatch({
       type: REMOVE_ONE_FROM_CART,
@@ -73,6 +73,15 @@ export async function clearCart() {
     return dispatch({
       type: CLEAR_CART,
       payload: [],
+    });
+  };
+}
+
+export async function setQuantity(quantity) {
+  return async function (dispatch) {
+    return dispatch({
+      type: SET_QUANTITY,
+      payload: quantity,
     });
   };
 }

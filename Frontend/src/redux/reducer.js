@@ -1,4 +1,4 @@
-import {GET_ALL_PRODUCTS, GET_A_PRODUCT, GET_ALL_INFORMATION, ADD_CART, CLEAR_CART, REMOVE_ONE_FROM_CART} from "./actions";
+import {GET_ALL_PRODUCTS, GET_A_PRODUCT, GET_ALL_INFORMATION, ADD_CART, CLEAR_CART, REMOVE_ONE_FROM_CART, SET_QUANTITY} from "./actions";
 
 
 const initialState = {
@@ -29,7 +29,16 @@ export default function rootReducer(state = initialState, payload) {
         case ADD_CART:
             return {
             ...state,
-            cart: payload.payload
+            cart: payload.payload.map(element => {
+                if(element.hasOwnProperty('quantity')){
+                    return{...element}
+                } else{
+                    return {
+                        ...element,
+                        quantity: 1
+                    }
+                }
+                })
             }
         case REMOVE_ONE_FROM_CART:
             return {
@@ -40,6 +49,20 @@ export default function rootReducer(state = initialState, payload) {
             return {
             ...state,
             cart: payload.payload
+            }
+        case SET_QUANTITY:
+            return {
+            ...state,
+            cart: state.cart.map(element => {
+                if (element.name === payload.payload.name) {
+                    return {
+                        ...element,
+                        quantity: parseInt(payload.payload.quantity) 
+                    }
+                } else {
+                    return element
+                }
+            })
             }
         default:
         return { ...state };

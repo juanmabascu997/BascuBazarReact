@@ -2,6 +2,8 @@ import './CartScreen.css';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Cartitem from '../components/Cartitem';
+import axios from 'axios';
+
 
 function CartScreen() {
   const cart = useSelector(state => state.cart);
@@ -12,6 +14,19 @@ function CartScreen() {
   }
   , [cart]);
 
+
+  const clickHandler = async (e) => {
+    e.preventDefault();
+    axios.post('/payments/mercadopago/payment', {
+      items: cartItems
+    }).then(res => {
+      window.open(res.data.init_point, '_blank', 'noopener,noreferrer');
+      // navigate(`${res.data}`);
+    }
+    ).catch(err => {
+      console.log(err);
+    });
+  }
 
   return (
     <div className='cartscreen'>
@@ -37,7 +52,7 @@ function CartScreen() {
               </div>
           )}
           <div className='cartscreen__container__title__button'>
-            <button>Comprar</button>
+            <button onClick={clickHandler}>Comprar</button>
           </div>
         </div>
       </div>

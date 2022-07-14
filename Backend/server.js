@@ -1,18 +1,27 @@
 require('dotenv').config()
 const express = require('express')
+const path = require('path')
+const cookieParser = require('cookie-parser')
 const connectDB = require('./config/db')
 const productsRoutes = require('./routes/productsRoutes')
 const informationRoutes = require('./routes/informationRoutes')
-// const client = require('./config/db')
+const paymentsMercadoPago = require('./routes/paymentsMercadoPago')
+
+
 const cors = require('cors');
 
 connectDB()
 const app = express()
 app.use(express.json())
+app.use(express.urlencoded({extended: false}))
+app.use(cookieParser())
+app.use(express.static(path.join(__dirname, "public")))
 app.use(cors());
 
 app.use('/api/products', productsRoutes)
 app.use('/api/information', informationRoutes)
+app.use('/payments/mercadopago', paymentsMercadoPago);
+
 
 const PORT = process.env.PORT || 3001
 

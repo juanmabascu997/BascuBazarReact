@@ -1,19 +1,34 @@
 import React from 'react'
 import './Cartitem.css';
 import {Link} from 'react-router-dom'
-import { removeOneFromCart } from '../redux/actions';
-import { useDispatch, useSelector } from 'react-redux';
+import { removeOneFromCart, setQuantity } from '../redux/actions';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 function Cartitem({product}) {
-  const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
 
+  const handledSelect = (e) => {
+    e.preventDefault();
+    let productItem = {
+      name: product.name,
+      quantity: e.target.value
+    }
+
+    setQuantity(productItem).then(res => {
+      dispatch(res);
+    }
+    ).catch(err => {
+      console.log(err);
+    }
+    );
+  }
 
   const handledClick = (e) => {
-    removeOneFromCart(e).then((action) => {
+    e.preventDefault();
+    removeOneFromCart(product.name).then((action) => {
         dispatch(action);
         toast.success("Producto eliminado del carrito", {
           position: "top-left",
@@ -25,7 +40,6 @@ function Cartitem({product}) {
           );
     }
     )
-       
     // eslint-disable-next-line
   }
 
@@ -38,14 +52,14 @@ function Cartitem({product}) {
             <p>{product.name}</p>
         </Link>
         <p className='cartitem__price'>Precio por unidad:<strong>${product.price}</strong></p>
-        <select className='cartitem__select'>
+        <select className='cartitem__select' onChange={handledSelect} defaultValue={product.quantity}>
             <option value='1'>1</option>
             <option value='2'>2</option>
             <option value='3'>3</option>
             <option value='4'>4</option>
             <option value='5'>5</option>
         </select>
-        <button className='cartitem__delete' onClick={()=>handledClick(product.name)}><i className='fas fa-trash'></i></button>        
+        <button className='cartitem__delete' onClick={handledClick}><i className='fas fa-trash'></i></button>        
     </div>
   )
 }
