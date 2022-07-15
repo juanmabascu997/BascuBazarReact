@@ -7,6 +7,8 @@ export const ADD_CART = "ADD_CART";
 export const CLEAR_CART = "CLEAR_CART";
 export const REMOVE_ONE_FROM_CART = "REMOVE_ONE_FROM_CART";
 export const SET_QUANTITY = "SET_QUANTITY";
+export const SET_USER = "SET_USER";
+export const GET_ALL_USERS = "GET_ALL_USERS";
 
 export async function getAllProducts() {
     return async function (dispatch) {
@@ -82,6 +84,32 @@ export async function setQuantity(quantity) {
     return dispatch({
       type: SET_QUANTITY,
       payload: quantity,
+    });
+  };
+}
+
+export async function getUsers() {
+  return async function (dispatch) {
+    let allUsers = await axios.get("/api/users/");
+    return dispatch({
+      type: GET_ALL_USERS,
+      payload: allUsers.data,
+    });
+  };
+}
+
+export async function setUser(user) {
+  let userToCreate = {
+    name: user.name,
+    email: user.email,
+    address: (user.address || "Not set yet"),
+    products: (user.products || "Not products yet"),
+  }
+  return async function (dispatch) {
+    let newUser = await axios.post("/api/users/", userToCreate);
+    return dispatch({
+      type: SET_USER,
+      payload: newUser,
     });
   };
 }

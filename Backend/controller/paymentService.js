@@ -4,22 +4,36 @@ class PaymentService {
   async createPayment(data) {
     const url = "https://api.mercadopago.com/checkout/preferences";
 
+    const itemsForBuy = data.items.map(item => {
+        return {
+            id: item._id,
+            title: item.name,
+            description: item.description,
+            picture_url: item.imageURL,
+            quantity: item.quantity,
+            currency_id: "ARS",
+            unit_price: item.price
+        }
+    }
+    );
+
     const body = {
       payer_email: "test_user_12762470@testuser.com",
-      items: [
-        {
-          title: "Dummy Title",
-          description: "Dummy description",
-          picture_url: "http://www.myapp.com/myimage.jpg",
-          category_id: "category123",
-          quantity: 1,
-          unit_price: 10
-        }
-      ],
+      items: itemsForBuy,
+    //   items: [
+    //     {
+    //       title: "Dummy Title",
+    //       description: "Dummy description",
+    //       picture_url: "http://www.myapp.com/myimage.jpg",
+    //       category_id: "category123",
+    //       quantity: 1,
+    //       unit_price: 10
+    //     }
+    //   ],
       back_urls: {
-        failure: "/failure",
-        pending: "/pending",
-        success: "/success"
+        failure: "http://localhost:3000/failure",
+        pending: "http://localhost:3000/pending",
+        success: "http://localhost:3000/success"
       }
     };
 

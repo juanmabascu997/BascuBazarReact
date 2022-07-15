@@ -1,0 +1,45 @@
+.paymentsscreen{
+    display: flex;
+    max-width: 1300px;
+    margin: 2rem auto;
+    height: 100%;   
+    width: 100%;
+    margin-bottom: 200px;
+}
+
+.payments__body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: calc(100vh - 65vh);
+    color: #222222;
+    padding: 10px;
+    transition: all 300ms;
+}
+
+.payments__body h1{
+    font-size: 38px;
+    word-spacing: -5px;
+    letter-spacing: -2px;
+    font-weight: bolder;
+}
+
+.payments__body h2{
+    margin-bottom: 10px;
+    color: #222222;
+}
+
+.payments__body p{
+    margin-bottom: 10px;
+}   
+
+@media (max-width: 626px){
+    .payments__body h1{ 
+        font-size: 28px;
+    }
+    .payments__body h2{
+        font-size: 15px;
+    }
+}

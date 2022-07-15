@@ -1,11 +1,23 @@
-import {GET_ALL_PRODUCTS, GET_A_PRODUCT, GET_ALL_INFORMATION, ADD_CART, CLEAR_CART, REMOVE_ONE_FROM_CART, SET_QUANTITY} from "./actions";
+import {
+    GET_ALL_PRODUCTS, 
+    GET_A_PRODUCT, 
+    GET_ALL_INFORMATION, 
+    ADD_CART, 
+    CLEAR_CART, 
+    REMOVE_ONE_FROM_CART, 
+    SET_QUANTITY, 
+    SET_USER,
+    GET_ALL_USERS,
+} from "./actions";
 
 
 const initialState = {
     products: [],
     product: [],
     info: [],
-    cart: []
+    cart: [],
+    user: [],
+    allUsers: [],
 }
 
 
@@ -63,6 +75,16 @@ export default function rootReducer(state = initialState, payload) {
                     return element
                 }
             })
+            }
+        case GET_ALL_USERS:
+            return {
+                ...state,
+                allUsers: payload.payload
+            }
+        case SET_USER:
+            return {
+                ...state,
+                user: payload.payload
             }
         default:
         return { ...state };

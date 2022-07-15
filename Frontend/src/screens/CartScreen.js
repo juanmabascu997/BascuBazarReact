@@ -8,7 +8,6 @@ import axios from 'axios';
 function CartScreen() {
   const cart = useSelector(state => state.cart);
   const [cartItems, setCartItems] = useState(cart);
-
   useEffect(() => {
     setCartItems(cart);
   }
@@ -20,8 +19,8 @@ function CartScreen() {
     axios.post('/payments/mercadopago/payment', {
       items: cartItems
     }).then(res => {
-      window.open(res.data.init_point, '_blank', 'noopener,noreferrer');
-      // navigate(`${res.data}`);
+      window.location.href = res.data.init_point;
+      // window.open(res.data.init_point, '_blank', 'noopener,noreferrer');
     }
     ).catch(err => {
       console.log(err);
@@ -43,7 +42,7 @@ function CartScreen() {
           {cartItems.length !== 0 ? (
               <div className='cartscreen__container__title__total'>
                 <p>Total:</p>
-                <p>${cartItems.reduce((acc, cur) => acc + cur.price, 0)}</p>
+                <p>${cartItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)}</p>
               </div>
             ) : (
               <div className='cartscreen__container__title__total'>

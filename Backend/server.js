@@ -6,7 +6,7 @@ const connectDB = require('./config/db')
 const productsRoutes = require('./routes/productsRoutes')
 const informationRoutes = require('./routes/informationRoutes')
 const paymentsMercadoPago = require('./routes/paymentsMercadoPago')
-
+const usersRoutes = require('./routes/usersRoutes')
 
 const cors = require('cors');
 
@@ -19,6 +19,7 @@ app.use(express.static(path.join(__dirname, "public")))
 app.use(cors());
 
 app.use('/api/products', productsRoutes)
+app.use('/api/users', usersRoutes)
 app.use('/api/information', informationRoutes)
 app.use('/payments/mercadopago', paymentsMercadoPago);
 
