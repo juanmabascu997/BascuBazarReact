@@ -8,6 +8,7 @@ import {
     SET_QUANTITY, 
     SET_USER,
     GET_ALL_USERS,
+    SET_USER_COPY
 } from "./actions";
 
 
@@ -18,6 +19,8 @@ const initialState = {
     cart: [],
     user: [],
     allUsers: [],
+    userCopy: [],
+    allUsersCopy: []
 }
 
 
@@ -85,6 +88,12 @@ export default function rootReducer(state = initialState, payload) {
             return {
                 ...state,
                 user: payload.payload
+            }
+        case SET_USER_COPY:
+            return {
+                ...state,
+                userCopy: payload.payload,
+                allUsersCopy: state.allUsers
             }
         default:
         return { ...state };

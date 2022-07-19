@@ -9,6 +9,7 @@ export const REMOVE_ONE_FROM_CART = "REMOVE_ONE_FROM_CART";
 export const SET_QUANTITY = "SET_QUANTITY";
 export const SET_USER = "SET_USER";
 export const GET_ALL_USERS = "GET_ALL_USERS";
+export const SET_USER_COPY = "SET_USER_COPY";
 
 export async function getAllProducts() {
     return async function (dispatch) {
@@ -103,13 +104,33 @@ export async function setUser(user) {
     name: user.name,
     email: user.email,
     address: (user.address || "Not set yet"),
-    products: (user.products || "Not products yet"),
+    phone: (user.phone || "Add your phone number"),
   }
   return async function (dispatch) {
     let newUser = await axios.post("/api/users/", userToCreate);
     return dispatch({
       type: SET_USER,
-      payload: newUser,
+      payload: newUser.data,
+    });
+  };
+}
+
+export async function updateUser(id, data) {
+    let allUsers = await axios.put(`/api/users/${id}`, data);
+    return allUsers;
+}
+
+export async function updateProducts(id, data) {
+  console.log(data);
+  let userUpdate = await axios.put(`/api/users/products/${id}`, { data: data});
+  return userUpdate;
+}
+
+export async function setUserCopy(user) {
+  return async function (dispatch) {
+    return dispatch({
+      type: SET_USER_COPY,
+      payload: user,
     });
   };
 }

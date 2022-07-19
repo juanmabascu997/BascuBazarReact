@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
     },
     products: {
         type: Array,
+        default: [],
+    },
+    phone: {
+        type: String,
         required: true
     },
     isAdmin: {

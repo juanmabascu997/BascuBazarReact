@@ -1,19 +1,34 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Payments.css';
-import { useDispatch } from 'react-redux';
-import { clearCart } from '../../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearCart, updateProducts } from '../../redux/actions';
 
 function SuccessScreen() {
+
   const dispatch = useDispatch();
+  const allUsers = useSelector(state => state.allUsersCopy);
+  const user = useSelector(state => state.userCopy);
+  const cart = useSelector(state => state.cart);
+  const [thisUser, setThisUser] =useState(allUsers.find(usr => usr.email === user.email)) 
 
   useEffect(() => {
-    clearCart().then((res) => {
+    return () => {
+      updateProducts(thisUser._id, cart).then((res) => {
         dispatch(res);
-    }
-    ).catch(err => {
-        console.log(err);
-    } 
-    ); 
+      }
+      ).catch(err => {
+          console.log(err);
+      } 
+      ); 
+  
+      clearCart().then((res) => {
+          dispatch(res);
+      }
+      ).catch(err => {
+          console.log(err);
+      } 
+      ); }
+  // eslint-disable-next-line
   },[])
 
   const clickHandler = async (e) => {

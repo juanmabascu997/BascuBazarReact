@@ -25,7 +25,7 @@ const addUser = async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             address: req.body.address,
-            products: req.body.products,
+            phone: req.body.phone
         })
         const newUser = await user.save()
         res.send(newUser)
@@ -34,8 +34,30 @@ const addUser = async (req, res) => {
     }
 }
 
+const updateUser = async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        res.send(user)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+}
+
+const updateUserProduct = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        user.products.push(...req.body.data)
+        const updatedUser = await user.save()
+        res.send(updatedUser)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+}
+
 module.exports = {
     getUsers,
     getUserByID,
-    addUser
+    addUser,
+    updateUser,
+    updateUserProduct
 }

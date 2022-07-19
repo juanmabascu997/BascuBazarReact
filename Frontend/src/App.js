@@ -34,13 +34,14 @@ function App() {
       dispatch(res);
     }
     );
+    
   // eslint-disable-next-line
   }
   , [])
 
   useEffect(() => {
     if (allUsers.length > 0) {
-      if( allUsers.find(user => user.email === user.email) === undefined ){
+      if( allUsers.find(e => e.email === user.email) === undefined ){
         setUser(user).then((res) => {
           dispatch(res);
         }
@@ -48,15 +49,15 @@ function App() {
         console.log("User added");
       } else {
         console.log("User was already in the database");
-        
       }
-    }
-    else {
-      setUser(user).then((res) => {
-          dispatch(res);
+    } else {
+      if(user){
+        setUser(user).then((res) => {
+            dispatch(res);
+        }
+        );
+        console.log("User is logged in for first time");
       }
-      );
-      console.log("User is logged in for first time");
      }
   // eslint-disable-next-line
   }
