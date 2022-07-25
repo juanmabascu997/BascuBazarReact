@@ -24,6 +24,7 @@ const addUser = async (req, res) => {
         const user = new User({
             name: req.body.name,
             email: req.body.email,
+            image: req.body.image,
             address: req.body.address,
             phone: req.body.phone
         })

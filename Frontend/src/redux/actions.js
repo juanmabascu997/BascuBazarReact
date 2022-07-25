@@ -10,6 +10,7 @@ export const SET_QUANTITY = "SET_QUANTITY";
 export const SET_USER = "SET_USER";
 export const GET_ALL_USERS = "GET_ALL_USERS";
 export const SET_USER_COPY = "SET_USER_COPY";
+export const SET_EDIT_PRODUCT = "SET_EDIT_PRODUCT";
 
 export async function getAllProducts() {
     return async function (dispatch) {
@@ -37,6 +38,11 @@ export async function getAProduct(id) {
       console.error("Error: " + e.message);
     }
   };
+}
+
+export async function setNewProduct(data) {
+  let newProduct = await axios.post(`/api/products/`, data);
+  return newProduct;
 }
 
 export async function getInformation() {
@@ -103,6 +109,7 @@ export async function setUser(user) {
   let userToCreate = {
     name: user.name,
     email: user.email,
+    image: user.picture,
     address: (user.address || "Not set yet"),
     phone: (user.phone || "Add your phone number"),
   }
@@ -121,8 +128,8 @@ export async function updateUser(id, data) {
 }
 
 export async function updateProducts(id, data) {
-  console.log(data);
-  let userUpdate = await axios.put(`/api/users/products/${id}`, { data: data});
+  let userUpdate = await axios.put(`/api/products/products/${id}`, data);
+  console.log(userUpdate);
   return userUpdate;
 }
 
@@ -131,6 +138,15 @@ export async function setUserCopy(user) {
     return dispatch({
       type: SET_USER_COPY,
       payload: user,
+    });
+  };
+}
+
+export async function setEditProduct(product) {
+  return async function (dispatch) {
+    return dispatch({
+      type: SET_EDIT_PRODUCT,
+      payload: product,
     });
   };
 }

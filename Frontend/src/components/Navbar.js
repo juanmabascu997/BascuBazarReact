@@ -7,6 +7,8 @@ import LogoutButton from './LogOut';
 import { useAuth0 } from "@auth0/auth0-react";
 import { FiUser } from "react-icons/fi";
 import { FiShoppingBag } from "react-icons/fi";
+import icon from '../img/PNG 150 PX.png';
+import styled from 'styled-components';
 
 function Navbar({click}) {
     const cart = useSelector(state => state.cart);
@@ -16,7 +18,7 @@ function Navbar({click}) {
     <nav className='navbar'>
         <div className='navbar__logo'>
             <Link to="/">
-                <h1 className='navbar__logoTitle'>Bascu Bazar</h1>
+                <Img src={icon} alt="icono" />
             </Link>
         </div>
         <ul className='navbar__links'>
@@ -59,3 +61,9 @@ function Navbar({click}) {
 }
 
 export default Navbar
+
+const Img = styled.img`
+    width: 100%;
+    height: 100%;
+    margin: 0;
+`

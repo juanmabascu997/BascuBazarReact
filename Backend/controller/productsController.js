@@ -28,15 +28,33 @@ const addProduct = async (req, res) => {
             imageURL: req.body.imageURL,
             countInStock: req.body.countInStock
         })
-        const newProduct = await product.save()
-        res.send(newProduct)
+        product.save();
+        console.log(product)
+
+        res.send(product)
     } catch (err) {
         res.status(500).json({ message: err.message })
+    }
+}
+
+const updateProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const body = req.body;
+        const productID = id;
+        const product = await Product.findByIdAndUpdate(productID, body, { new: true })
+
+        product.save();
+
+        res.send(product)
+    } catch (error) {
+        return { message: error.message };
     }
 }
 
 module.exports = {
     getProducts,
     getProductById,
-    addProduct
+    addProduct,
+    updateProduct
 }

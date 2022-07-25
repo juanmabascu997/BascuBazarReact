@@ -13,13 +13,13 @@ function LoginButton() {
 export default LoginButton
 
 const Button = styled.button`
-    background-color: #6F88FC;
+    background-color: #3f4e8f;
     padding: 10px;
-    border: 1px solid #6F88FC;
+    border: 1px solid #3f4e8f;
     border-radius: 5px;
     transition: all 300ms;
     text-decoration: none;
-    color: #222222;
+    color: #fff;
     font-size: 1.2rem;
     display: flex;
     flex-direction: row;

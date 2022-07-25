@@ -9,7 +9,7 @@ import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInformation, getUsers, setUser } from './redux/actions';
+import { getInformation, getUsers, setUser, setUserCopy } from './redux/actions';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PendingScreen from './screens/PaymentScreens/PendingScreen';
@@ -17,7 +17,8 @@ import SuccessScreen from './screens/PaymentScreens/SuccessScreen';
 import FailureScreen from './screens/PaymentScreens/FailureScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import { useAuth0 } from "@auth0/auth0-react";
-
+import AdminScreen from './screens/AdminScreen';
+import Wave from 'react-wavify'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -46,6 +47,14 @@ function App() {
           dispatch(res);
         }
         );
+        setUserCopy(user).then((res) => {
+          dispatch(res);
+        }
+        );
+        getUsers().then((res) => {
+          dispatch(res);
+        }
+        );
         console.log("User added");
       } else {
         console.log("User was already in the database");
@@ -54,6 +63,14 @@ function App() {
       if(user){
         setUser(user).then((res) => {
             dispatch(res);
+        }
+        );
+        setUserCopy(user).then((res) => {
+          dispatch(res);
+        }
+        );
+        getUsers().then((res) => {
+          dispatch(res);
         }
         );
         console.log("User is logged in for first time");
@@ -77,8 +94,28 @@ function App() {
             <Route exact path='/failure' element={<FailureScreen/>}/>
             <Route exact path='/pending' element={<PendingScreen/>}/>
             <Route exact path='/profile' element={<ProfileScreen/>}/>
+            <Route exact path='/adminProfile' element={<AdminScreen/>}/>
             <Route path='*' element={<div>404</div>}/>
           </Routes>
+          <Wave fill='#3f4e8f'
+              paused={false}
+              options={{
+                height: 20,
+                amplitude: 20,
+                speed: 0.5,
+                points: 3,
+                responsive: true,
+                fill: '#3f4e8f',
+                style: {
+                  position: 'fixed',
+                  bottom: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '50%',
+                  zIndex: -100,
+                },
+              }}
+            />
         </main>
         <Footer />
         <ToastContainer />

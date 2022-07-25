@@ -8,15 +8,14 @@ import { getUsers } from '../redux/actions';
 function ProfileScreen() {
     const dispatch = useDispatch();
     const allUsers = useSelector(state => state.allUsersCopy);
+    const user = useSelector(state => state.userCopy);
+    const { isLoading, isAuthenticated } = useAuth0();
+    const [thisUser, setThisUser] = useState(allUsers.find(usr => usr.email === user.email)) 
 
-    const { user, isAuthenticated, isLoading } = useAuth0()
-
-    const [thisUser, setThisUser] =useState(allUsers.find(usr => usr.email === user.email)) 
-
-    
     const [ userData, setUserData ] = useState({
         name: thisUser.name,
         email: thisUser.email,
+        image: user.image,
         phone: thisUser.phone,
         address: thisUser.address,
     })     
@@ -30,7 +29,7 @@ function ProfileScreen() {
         );
     // eslint-disable-next-line
     }
-    , [])
+    , [])        
 
 
     const handleChange = (e) => {
@@ -86,6 +85,7 @@ function ProfileScreen() {
                         <p>
                             Tu direccion de preferencia es: <strong>{thisUser.address}</strong>
                         </p>
+                        {thisUser.isAdmin === true ? <p>Eres administrador. Click <a href='/adminProfile'>aqui</a> para acceder al panel de Admin</p> : null}
                     </div>) : screen === "products" ?
                     (<div>
                         <p>Tus productos:</p>
