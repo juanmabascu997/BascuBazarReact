@@ -6,13 +6,13 @@
     grid-template-columns: 1fr 4fr 1fr 1fr 1fr;
     gap: 8px;
     background-color: #ffffff;
-    border-radius: 2px;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
     place-items: center;
-
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    -ms-border-radius: 2px;
-    -o-border-radius: 2px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
 }
 
 .cartitem__name{

@@ -4,6 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components'
 import { updateUser } from '../redux/actions';
 import { getUsers } from '../redux/actions';
+import { Formik, Form, Field } from 'formik';
+import { Box,Button } from '@mui/material';
+import { TextField} from 'formik-mui';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function ProfileScreen() {
     const dispatch = useDispatch();
@@ -31,24 +37,6 @@ function ProfileScreen() {
     }
     , [])        
 
-
-    const handleChange = (e) => {
-        setUserData({
-            ...userData,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const handleSubmit = async function (e) {
-        e.preventDefault()
-        let userUpdate = await updateUser(thisUser._id, userData)
-        getUsers().then((res) => {
-            dispatch(res);
-        }
-        );
-        setThisUser(userUpdate.data)
-    }
-
     const handlerMenu = (e) => {
         setScreen(e.target.value)
     }
@@ -73,41 +61,148 @@ function ProfileScreen() {
             </Left>
             <Center>
                 {screen === "profile" ?
-                    (<div>
+                    (<Profile>
                         <h1>Mi perfil</h1>
                         <Perfil>
                             <img src={user.picture} alt=""/>
-                            <p>Bienvenido a tu perfil {thisUser.name}</p>
+                            <p>Bienvenido a tu perfil</p> <Italic>{thisUser.name}</Italic>
                         </Perfil>
-                        <p>
-                            Tu correo es: {thisUser.email}
-                        </p>
-                        <p>
+                        <Italic>
+                            Tu correo es: <strong>{thisUser.email}</strong> 
+                        </Italic>
+                        <Italic>
                             Tu direccion de preferencia es: <strong>{thisUser.address}</strong>
-                        </p>
+                        </Italic>
                         {thisUser.isAdmin === true ? <p>Eres administrador. Click <a href='/adminProfile'>aqui</a> para acceder al panel de Admin</p> : null}
-                    </div>) : screen === "products" ?
-                    (<div>
-                        <p>Tus productos:</p>
+                    </Profile>) : screen === "products" ?
+                    (<Products>
+                        <h1>Tus productos</h1>
                         <ul>
                             {thisUser.products.length !== 0 ? thisUser.products.map(product => (
                                 <li><strong>{product.name}</strong></li>
-                            )): <li>No tienes productos</li>
+                            )): <Italic>No tienes productos</Italic>
                             }
                         </ul>
-                    </div>) : screen === "edit" ?
+                    </Products>) : screen === "edit" ?
                     (<div>
-                        <form onSubmit={handleSubmit}>
-                            <label>Nombre:</label>
-                            <input type="text" name="name" value={userData.name} onChange={handleChange}/>
-                            <label>Email:</label>
-                            <input type="text" name="email" value={userData.email} onChange={handleChange}/>
-                            <label>Telefono:</label>
-                            <input type="text" name="phone" value={userData.phone} onChange={handleChange}/>
-                            <label>Direccion:</label>
-                            <input type="text" name="address" value={userData.address} onChange={handleChange}/>
-                            <button type="submit">Guardar</button>
-                        </form>
+                        <Formik
+                            initialValues={ {
+                                name: userData.name,
+                                email: userData.email,
+                                address: userData.address,
+                                phone: userData.phone
+                            }}
+                            validate={values => {
+                                const errors = {};
+                                if (!values.name) {
+                                    errors.name = 'Required';
+                                }
+                                if (!values.email) {
+                                    errors.email = 'Required';
+                                }
+                                if (!values.address) {
+                                    errors.address = 'Required';
+                                }
+                                if (!values.phone) {
+                                    errors.phone = 'Required';
+                                }
+                                return errors;
+                            }}
+                            onSubmit={ async (values, { setSubmitting }) => {
+                                let userData = {
+                                    name: values.name,
+                                    email: values.email,
+                                    address: values.address,
+                                    phone: values.phone,
+                                };
+                                let userUpdate = await updateUser(thisUser._id, userData)
+                                getUsers().then((res) => {
+                                    dispatch(res);
+                                }
+                                );
+                                setThisUser(userUpdate.data)
+
+                                setSubmitting(false);
+                                toast.success("Perfil modificado", {
+                                    position: "bottom-rigth",
+                                    autoClose: 3000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true}
+                                    )
+                            }}
+                        >
+                            {({
+                                values,
+                                errors,
+                                touched,
+                                handleBlur,
+                                handleSubmit,
+                                isSubmitting,
+                                submitForm,
+                                resetForm
+                                /* and other goodies */
+                            }) => (
+                                <Form>
+                                        <h1>Modifica tus datos</h1>
+                                        <Box margin={1}>
+                                            <Field
+                                            component={TextField}
+                                            type="text" 
+                                            name="name"
+                                            label="Nombre"
+                                            />
+                                        </Box>
+                                        <Box margin={1}>
+                                            <Field
+                                            component={TextField}
+                                            type="email"
+                                            name="email"
+                                            label="Email"
+                                            />
+                                        </Box>
+                                        <Box margin={1}>
+                                            <Field
+                                            component={TextField}
+                                            type="phone"
+                                            name="phone"
+                                            label="Phone"
+                                            />
+                                        </Box>
+                                        <Box margin={1}>
+                                            <Field
+                                            component={TextField}
+                                            type="text"
+                                            name="address"
+                                            label="Direccion"
+                                            />
+                                        </Box>
+                                        <Box margin={1}>
+                                            <Button
+                                                sx={{margin: 1}}
+                                                variant="contained"
+                                                color="primary"
+                                                disabled={isSubmitting}
+                                                onClick={submitForm}
+                                            >
+                                                Guardar
+                                            </Button>
+                                            <Button
+                                                sx={{margin: 1}}
+                                                variant="contained"
+                                                color="secondary"
+                                                disabled={isSubmitting}
+                                                onClick={() => {
+                                                    resetForm();
+                                                }}
+                                            >
+                                                Reset
+                                            </Button>
+                                        </Box>
+                                    </Form>
+                                )}
+                        </Formik>
                     </div>): null}
             </Center>
         </Container>): null
@@ -125,13 +220,12 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #fafafa;
     padding: 20px;
 
     h1 {
         text-align: center;
         font-size: 30px;
-        margin-bottom: 20px;
+        margin-bottom: 5px;
     }
     ul {
         list-style: none;
@@ -141,7 +235,13 @@ const Container = styled.div`
     li {
         text-align: center;
         margin-bottom: 10px;
-        margin-top: 20px;
+        margin-top: 5px;
+        border-bottom: 1px solid #ccc;
+        font-size: 10px;
+        font-weight: lighter;
+        &:first-child{
+            margin-top: 15px;
+        }
     }
 `
 
@@ -166,13 +266,15 @@ const Perfil = styled.div`
 const Left  = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     width: 30%;
-    background-color: #fafafa;
+    background-color: #ffff;
     padding: 20px;
     border-radius: 10px;
     margin-right: 20px;
     margin-bottom: 20px;
+    box-shadow: 0px 0px 2px #ccc;
+    border: 1px solid #ccc;
     ul{
         li{
             button{
@@ -181,11 +283,10 @@ const Left  = styled.div`
                 border-radius: 10px;
                 padding: 10px;
                 margin-bottom: 10px;
-                font-size: 20px;
-                font-weight: bold;
+                font-size: 15px;
+                font-weight: lighter;
                 color: #000;
                 cursor: pointer;
-
             }
         }
     }
@@ -196,8 +297,35 @@ const Center = styled.div`
     align-items: center;
     justify-content: center;
     width: 60%;
-    background-color: #fafafa;
+    background-color: #ffff;
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
+    box-shadow: 0px 0px 2px #ccc;
+    border: 1px solid #ccc;
+`
+
+const Italic = styled.p`
+    font-style: italic;
+`
+
+const Profile = styled.div`
+    margin-left: 25px;
+    margin-right: 25px;
+    display: flex;
+    flex-direction: column;
+`    
+
+const Products = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 `

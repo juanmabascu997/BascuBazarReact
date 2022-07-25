@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React from 'react'
 import { useSelector } from 'react-redux';
+import icon from '../img/PNG 150 PX.png';
 
 function Footer() {
     const info = useSelector(state => state.info);
@@ -10,12 +11,19 @@ function Footer() {
         {info.length !== 0 ? info.map((item, index) => {
             return (
                 <FooterDiv key={index}>
-                    <h1>{item.name}</h1>
+                    <div>
+                        <Img src={icon} alt="icono" />
+                    </div>
+                    <div>
+                        <p><strong>Telefono de contacto:</strong> {item.phone}</p>
+                        <p><strong>Correo de contacto:</strong> {item.email}</p>
+                        <p>{item.contact}</p>
+                        <p>{item.address}</p> 
+                        </div>
                     {/* <h3>{item.promotion}</h3>
-                    <p>{item.contact}</p>
-                    <p>{item.address}</p> */}
-                    <p>{item.phone}</p>
-                    <p>{item.email}</p>
+                    
+                    */}
+
                 </FooterDiv>
             )
         }): null}
@@ -40,26 +48,36 @@ const FooterContainer = styled.div`
 
 const FooterDiv = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     width: 100%;
     height: 100%;
     margin-bottom: 20px;
     padding: 20px;
-    h1{
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 10px;
+    div{
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
-    h3{
-        font-size: 20px;
+    h1{
         font-weight: bold;
         margin-bottom: 10px;
     }
     p{
-        font-size: 20px;
-        font-weight: bold;
+        font-size: 15px;
+        font-weight: light;
         margin-bottom: 10px;
     }
+`
+
+
+const Img = styled.img`
+    width: 250px;
+    height: 250px;
+    margin-left: 10px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 `
