@@ -39,7 +39,7 @@ function CartScreen() {
         });
       } else{
         toast.error("Agrega productos al carrito", {
-          position: "top-left",
+          position: "bottom-left",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -49,7 +49,7 @@ function CartScreen() {
       }
     } else {
       toast.error("Para comprar debes loguearte", {
-        position: "top-left",
+        position: "bottom-left",
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -74,7 +74,7 @@ function CartScreen() {
         <div className='cartscreen__info'>
           {cartItems.length !== 0 ? (
               <div className='cartscreen__container__title__total'>
-                <p>Total:</p>
+                <p><strong>Monto total de compra: </strong></p>
                 <p>${cartItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)}</p>
               </div>
             ) : (
@@ -83,9 +83,7 @@ function CartScreen() {
                 <p>$0</p>
               </div>
           )}
-          <div className='cartscreen__container__title__button'>
-            <button onClick={clickHandler}>Comprar</button>
-          </div>
+          <button className='css-pvr4uq-MuiButtonBase-root-MuiButton-root' onClick={clickHandler}>Comprar</button>
         </div>
       </div>
     </div>

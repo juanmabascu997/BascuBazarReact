@@ -26,7 +26,8 @@ const addProduct = async (req, res) => {
             price: req.body.price,
             description: req.body.description,
             imageURL: req.body.imageURL,
-            countInStock: req.body.countInStock
+            countInStock: req.body.countInStock,
+            tags: req.body.tags,
         })
         product.save();
         console.log(product)

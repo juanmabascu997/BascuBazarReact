@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import styled from 'styled-components'
 import Backdrop from '../components/Backdrop';
@@ -6,6 +6,9 @@ import FormProducts from '../components/FormProducts';
 import FormEditProducts from '../components/FormEditProducts';
 import { useDispatch } from 'react-redux';
 import { setEditProduct } from '../redux/actions';
+import { BiEdit } from 'react-icons/bi';
+import { Button } from '@mui/material';
+
 
 function AdminScreen() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -19,6 +22,12 @@ function AdminScreen() {
     const thisUser = allUsers.find(usr => usr.email === user.email)
     const [ screen, setScreen ] = useState("users")
 
+    useEffect(() => {
+        window.scrollTo(0,0)
+    }
+    , [])
+    
+    
     const setPruductToEdit = (product) => {
         setEditProduct(product).then((res) => {
             dispatch(res);
@@ -53,34 +62,34 @@ function AdminScreen() {
                 </ul>
             </div>
         </Left>
-        <Perfil>
+        <Center>
             {screen === "users" ?
             (<div>
-                <h3>Usuarios</h3>
-                <ul>
+                <h1>Usuarios</h1>
+                <Lista>
                     {allUsers.map(usr => {
                         return <li>{usr.name}</li>
                     }
                     )}
-                </ul>
+                </Lista>
             </div>) : null}
             {screen === "products" ?
-            (<div>
-                <h3>Productos</h3>
-                <ul>
+            (<Products>
+                <h1>Productos</h1>
+                <Lista>
                     {allProducts.length !== 0 ? allProducts.map(usr => {
-                        return <>
-                            <li>{usr.name}</li>
-                            <button onClick={()=> {setPruductToEdit(usr);setSidebarEditOpen(true)}}>Editar</button>
-                        </> 
+                        return <li>
+                            <label>{usr.name}</label>
+                            <button onClick={()=> {setPruductToEdit(usr);setSidebarEditOpen(true)}}><BiEdit/></button>
+                        </li> 
                     }
                     ) : <li>No hay productos</li>}
-                </ul>
-                <button onClick={()=> setSidebarOpen(true)}>Agregar producto</button>
-            </div>) : null}
+                </Lista>
+                <Button className='css-pvr4uq-MuiButtonBase-root-MuiButton-root' onClick={()=> setSidebarOpen(true)}>Agregar producto</Button>
+            </Products>) : null}
             {screen === "promotions" ?
             (<div>
-                <h3>Promociones</h3>
+                <h1>Promociones</h1>
                 <ul>
                     {allPromotions.length !== 0 ? allPromotions.map(usr => {
                         return <li>{usr.name}</li>
@@ -90,14 +99,14 @@ function AdminScreen() {
             </div>) : null}
             {screen === "estadistics" ?
             (<div>
-                <h3>Estadisticas</h3>
+                <h1>Estadisticas</h1>
                 <ul>
                     <li>
                         Aca irian las estadisticas, como cuales productos se vendieron, etc.
                     </li>
                 </ul>
             </div>) : null}
-        </Perfil>  
+        </Center>  
 
         <Backdrop click={()=> {setSidebarOpen(false); setSidebarEditOpen(false)}} show={sidebarOpen || sidebarEditOpen}/>
         <FormProducts click={()=> setSidebarOpen(false)} show={sidebarOpen}/>
@@ -113,24 +122,145 @@ export default AdminScreen
 const Container = styled.div`
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     height: 100vh;
-    background-color: #fafafa;
     padding: 20px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    h1 {
+        text-align: center;
+        font-size: 30px;
+        margin-bottom: 5px;
+    }
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    li {
+        text-align: center;
+        margin-bottom: 10px;
+        margin-top: 5px;
+        border-bottom: 1px solid #ccc;
+        font-size: 10px;
+        font-weight: lighter;
+        &:first-child{
+            margin-top: 15px;
+        }
+    }
 `
-const Left  = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 30%;
-    background-color: #fafafa;
-    padding: 20px;
-`
+
 const Perfil = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-top: 20px;
-    margin-bottom: 20px;`
+    margin-bottom: 20px;
+    img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+`
+const Left  = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    background-color: #ffff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 2px #ccc;
+    border: 1px solid #ccc;
+    ul{
+        li{
+            button{
+                background-color: transparent;
+                border: none;
+                border-radius: 10px;
+                padding: 10px;
+                margin-bottom: 10px;
+                font-size: 15px;
+                font-weight: lighter;
+                color: #000;
+                cursor: pointer;
+            }
+        }
+    }
+`
+const Center = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    background-color: #ffff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 2px #ccc;
+    border: 1px solid #ccc;
+    overflow-y: auto;
+
+`
+
+const Italic = styled.p`
+    font-style: italic;
+`
+
+const Lista = styled.ul`
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    li{
+        display: flex;
+        text-align: center;
+        align-items: center;
+
+        justify-content: space-between;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        font-size: 10px;
+
+        &:first-child{
+            margin-top: 15px;
+        }
+        button{
+            display: flex;
+            background-color: #FF7701;
+            border: none;
+            border-radius: 10px;
+            padding: 5px;
+            font-size: 15px;
+            font-weight: lighter;
+            color: #000;
+            cursor: pointer;
+        }
+    }
+`
+
+
+const Products = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: fl;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+`

@@ -113,6 +113,7 @@ function App() {
                   width: '100%',
                   height: '50%',
                   zIndex: -100,
+                  backgroundColor: '#FF7701'
                 },
               }}
             />

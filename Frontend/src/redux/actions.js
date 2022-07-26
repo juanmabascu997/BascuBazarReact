@@ -5,17 +5,30 @@ export const GET_A_PRODUCT = "GET_A_PRODUCT";
 export const GET_ALL_INFORMATION = "GET_ALL_INFORMATION";
 export const ADD_CART = "ADD_CART";
 export const CLEAR_CART = "CLEAR_CART";
+export const CLEAR_PRODUCT = "CLEAR_PRODUCT";
 export const REMOVE_ONE_FROM_CART = "REMOVE_ONE_FROM_CART";
 export const SET_QUANTITY = "SET_QUANTITY";
 export const SET_USER = "SET_USER";
 export const GET_ALL_USERS = "GET_ALL_USERS";
 export const SET_USER_COPY = "SET_USER_COPY";
 export const SET_EDIT_PRODUCT = "SET_EDIT_PRODUCT";
+export const SET_TAGS = "SET_TAGS";
 
 export async function getAllProducts() {
     return async function (dispatch) {
       try {
         const products = await axios.get(`/api/products/`);
+        if(products.data.length > 0 ){
+          const tags = products.data.map(data => data.tags.map(tag => tag))
+          const tagsArray =[...new Set(tags.flat())] 
+          setTags(tagsArray).then((res) => {
+            dispatch(res);
+          })
+        } else {
+          setTags([]).then((res) => {
+            dispatch(res);
+          })
+        }
         return dispatch({
           type: GET_ALL_PRODUCTS,
           payload: products.data,
@@ -24,6 +37,19 @@ export async function getAllProducts() {
         console.error("Error: " + e.message);
       }
     };
+}
+
+export async function setTags(tags){
+  return async function (dispatch) {
+    try {
+      return dispatch({
+        type: SET_TAGS,
+        payload: tags,
+      });
+    } catch (e) {
+      console.error("Error: " + e.message);
+    }
+  };
 }
 
 export async function getAProduct(id) {
@@ -39,6 +65,16 @@ export async function getAProduct(id) {
     }
   };
 }
+
+export async function clearProduct() {
+  return async function (dispatch) {
+    return dispatch({
+      type: CLEAR_PRODUCT,
+      payload: [],
+    });
+  };
+}
+
 
 export async function setNewProduct(data) {
   let newProduct = await axios.post(`/api/products/`, data);

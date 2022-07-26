@@ -39,8 +39,8 @@
 
 .cartitem__delete{
     padding: 10px 17px;
-    background-color: #ffffff;
-    color: #2f2f2f;
+    background-color: #FF7701;
+    color: #fff;
     cursor: pointer;
     border-radius: 5px;
     border: none;
@@ -59,7 +59,7 @@
 .cartitem__delete:focus,
 .cartitem__delete:active,
 .cartitem__delete:visited{
-    background-color: #2f2f2f;
+    background-color: #FF7701;
     color: #ffffff;
     transform: scale(1.1);
     -webkit-transform: scale(1.1);

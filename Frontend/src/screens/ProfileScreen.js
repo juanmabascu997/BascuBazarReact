@@ -33,6 +33,8 @@ function ProfileScreen() {
             dispatch(res);
         }
         );
+        window.scrollTo(0,0)
+
     // eslint-disable-next-line
     }
     , [])        
@@ -73,7 +75,10 @@ function ProfileScreen() {
                         <Italic>
                             Tu direccion de preferencia es: <strong>{thisUser.address}</strong>
                         </Italic>
-                        {thisUser.isAdmin === true ? <p>Eres administrador. Click <a href='/adminProfile'>aqui</a> para acceder al panel de Admin</p> : null}
+                        <Italic>
+                            Tu telefono de contacto es: <strong>{thisUser.phone}</strong>
+                        </Italic>
+                        {thisUser.isAdmin === true ? <Admin>Eres administrador. Click <a href='/adminProfile'>aqui</a> para acceder al panel de Admin</Admin> : null}
                     </Profile>) : screen === "products" ?
                     (<Products>
                         <h1>Tus productos</h1>
@@ -217,10 +222,11 @@ export default ProfileScreen
 const Container = styled.div`
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     height: 100vh;
     padding: 20px;
+    margin-top: 100px;
 
     h1 {
         text-align: center;
@@ -328,4 +334,13 @@ const Products = styled.div`
         text-align: center;
         margin-bottom: 20px;
     }
+`
+
+const Admin = styled.p`
+    font-size: 11px;
+    font-weight: lighter;
+    color: #000;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: center;
 `

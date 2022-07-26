@@ -5,6 +5,7 @@ import './Product.css';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
+import { Button } from '@mui/material';
 
 function Product({product}) {
   const cart = useSelector(state => state.cart);
@@ -16,7 +17,7 @@ function Product({product}) {
         let repetido = cart.filter(e => e.name == product.name)
         if(repetido.length > 0){
           toast.error("El producto ya esta en el carrito", {
-            position: "top-left",
+            position: "bottom-left",
             autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -25,7 +26,7 @@ function Product({product}) {
           );
         } else{
             toast.success("Producto agregado al carrito", {
-              position: "top-left",
+              position: "bottom-left",
               autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -47,9 +48,9 @@ function Product({product}) {
             <p className='info__price'>${product.price}</p>
 
             <Link to={`/product/${product._id}`}>
-                <button className='info__button'>View more</button>
+                <Button className='css-pvr4uq-MuiButtonBase-root-MuiButton-root'>Ver más</Button>
             </Link>
-            <button className='info__buttonCart' onClick={addToCarrito}>Add to cart</button>
+            <Button className='css-h0uqyz-MuiButtonBase-root-MuiButton-root' onClick={addToCarrito}>Añadir | <i className="fas fa-shopping-cart"></i></Button>
         </div>
     </ProductCard>
   )
@@ -85,22 +86,12 @@ const ProductCard = styled.div`
             font-weight: bold;
             margin-bottom: 10px;
         }
-        .info__button{
-            background-color: #3f4e8f;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
-        .info__buttonCart{
-            background-color: #3f4e8f;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 10px;
-            cursor: pointer;
+        
+        a{
+          text-decoration: none;
+          button{
+            margin-bottom: 5px;
+          }
         }
     }
     img{

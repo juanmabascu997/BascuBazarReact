@@ -7,12 +7,17 @@ import {updateProducts} from '../redux/actions';
 import { Box, Button} from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import { TextField} from 'formik-mui';
+import styled from 'styled-components';
+import {FiDelete} from 'react-icons/fi';
 
 
 function FormEditProducts({click, show}) {
     const productToEdit = useSelector(state => state.editProduct);
 
     const [description, setDescription] = React.useState("")
+    const tags = useSelector(state => state.tags);
+    const [tag, setTag] = React.useState(tags);
+    const [selectedTags, setSelectedTags] = React.useState(productToEdit.tags);
 
     const sideDrawerClass = ["edit"]
 
@@ -30,6 +35,34 @@ function FormEditProducts({click, show}) {
         setDescription(e.target.value)
     }
 
+    const handleAddTag = (e) => {
+        if(selectedTags.find(tg => tg === e.target.value) === undefined) {
+            setSelectedTags([...selectedTags, e.target.value])
+            toast.success("Tag selected")
+        } 
+        else {
+            setSelectedTags(selectedTags.filter(tg => tg !== e.target.value))
+            toast.error("Tag removed")  
+        }
+    }
+    
+    const handlerCreationTag = (e) => {
+        if(tag.includes(e)) {
+            toast.error("Tag already exists")
+        }
+        if(e === "") {
+            toast.error("Tag cannot be empty")
+        }
+        if(e !== "" && tag.includes(e) === false) {
+            setTag([...tag, e])
+            toast.success("Tag created")
+        }
+    }
+    
+    const handlerDeleteTag = (e) => {
+        setSelectedTags(selectedTags.filter(tg => tg !== e))
+        toast.error("Tag removed")
+    }
 
   return ( show &&
     <div className={sideDrawerClass.join(" ")}>
@@ -75,7 +108,8 @@ function FormEditProducts({click, show}) {
                     price: parseInt(values.price),
                     description: description,
                     imageURL: values.imageURL,
-                    countInStock: parseInt(values.countInStock)
+                    countInStock: parseInt(values.countInStock),
+                    tags: selectedTags
                 };
                 if(description === ""){
                     toast.error("La descripcion no puede estar vacia", {
@@ -129,6 +163,50 @@ function FormEditProducts({click, show}) {
                         label="Nombre"
                         helperText="Por favor ingrese el nombre del producto"
                         />
+                    </Box>
+                    {selectedTags?.length>0 ?<Italic>Tus tags son:</Italic> : null}
+                    <TagsSelected>
+                        {selectedTags.map(e => <div><p><strong>{e} <FiDelete onClick={() =>handlerDeleteTag(e)}/></strong></p></div>)}
+                    </TagsSelected>
+                    <Box margin={1}>
+                        <FormTag>
+                        <label><strong>Selecciona los Tags del producto:</strong></label>
+                        {tag?.length > 0 ? tag.map((tgs) => 
+                            <div>
+                                {selectedTags.includes(tgs) ? 
+                                    null :
+                                    <input type="checkbox" name="tags" value={tgs} onChange={handleAddTag} />
+                                }
+                                {selectedTags.includes(tgs) ? 
+                                null:
+                                <label><strong>{tgs}</strong></label>}
+                            </div>
+                            )
+                        : <p>No hay tags para mostrar</p>}
+                        </FormTag>
+                        <div>
+                        <p>O crea una nueva categoria:</p>
+                        <Field
+                            name="newTag"
+                            component={TextField}
+                            type="text"
+                            label="New Tag"
+                            helperText="Ingresa la categoria"
+                        />
+                            <Button
+                            sx={{margin: 1}}
+                            variant="contained"
+                            color="primary"
+                            disabled={isSubmitting}
+                            onClick={() => {
+                                handlerCreationTag(values.newTag);
+                                values.newTag = "";
+                            }}
+                            value={values.newTag}
+                            >
+                            Crear Tag
+                            </Button>
+                        </div>
                     </Box>
                     <Box margin={1}>
                         <Field
@@ -200,3 +278,34 @@ function FormEditProducts({click, show}) {
 }
 
 export default FormEditProducts
+
+const TagsSelected = styled.div`
+    display: flex;
+    flex-direction: row;
+    div {
+        color: #dddddd;
+        border: 1px solid #ccc;
+        background-color: #222222;
+        margin: 1px;
+        margin-bottom: 1px;
+        padding: 0.5rem;
+        padding-bottom: 0px;
+        border-radius: 5px;
+    }   
+`
+const FormTag = styled.form`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    div {
+        margin-bottom: 1px;
+        padding: 0.5rem;
+        border-radius: 5px;
+    }
+`
+
+const Italic = styled.p`
+  text-align: center;
+  font-style: italic;
+`

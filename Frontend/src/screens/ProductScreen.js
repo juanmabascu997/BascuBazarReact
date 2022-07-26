@@ -1,20 +1,56 @@
+import { Button } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { getAProduct } from '../redux/actions';
 import './ProductScreen.css';
+import { addCart } from '../redux/actions';
 
 function ProductScreen() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const product = useSelector(state => state.product);
+  const cart = useSelector(state => state.cart);
 
   useEffect(() => {
    getAProduct(id).then((res) => {
       dispatch(res);
     })
+    window.scrollTo(0,0)
+    return () => {
+      dispatch({ type: 'CLEAR_PRODUCT' });
+    }
   }
   , [])
+
+  const addToCarrito = (e) => {
+    e.preventDefault();
+      let repetido = cart.filter(e => e.name == product.name)
+      if(repetido.length > 0){
+        toast.error("El producto ya esta en el carrito", {
+          position: "bottom-left",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true}
+        );
+      } else{
+          toast.success("Producto agregado al carrito", {
+            position: "bottom-left",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true}
+          );
+          addCart([...new Set([...cart, product])]).then((action) => {
+              dispatch(action);
+            });
+      }
+  }
+
   return (
     <div className='productscreen'>
       <div className='productscreen__left'>
@@ -46,7 +82,7 @@ function ProductScreen() {
             </select>
           </p>
           <p>
-            <button type='button'>Añadir a carrito</button>
+            <Button className='css-h0uqyz-MuiButtonBase-root-MuiButton-root' onClick={addToCarrito}>Añadir a carrito</Button>
           </p>
         </div>
       </div>

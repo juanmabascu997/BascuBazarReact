@@ -31,7 +31,7 @@ function Cartitem({product}) {
     removeOneFromCart(product.name).then((action) => {
         dispatch(action);
         toast.success("Producto eliminado del carrito", {
-          position: "top-left",
+          position: "bottom-left",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,

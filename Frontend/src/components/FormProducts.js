@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './FormProducts.css';
 import styled from 'styled-components';
 import { setNewProduct } from '../redux/actions';
@@ -7,20 +7,55 @@ import { Box,Button } from '@mui/material';
 import { TextField} from 'formik-mui';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
 
 function FormProducts({click, show}) {
 
     const [description, setDescription] = React.useState("")
+    const tags = useSelector(state => state.tags);
+    const [tag, setTag] = React.useState(tags);
+    const [selectedTags, setSelectedTags] = React.useState([]);
 
     const sideDrawerClass = ["formproduct"]
     if (show) {
       sideDrawerClass.push("show")
     }
 
+    useEffect(() => {
+        return () => {
+          setTag(tags)
+          setSelectedTags([])
+        } 
+    }
+    , []);
     
     const handleChange = (e) => {
         e.preventDefault()
         setDescription(e.target.value)
+    }
+
+    const handleAddTag = (e) => {
+        if(selectedTags.find(tg => tg === e.target.value) === undefined) {
+            setSelectedTags([...selectedTags, e.target.value])
+            toast.success("Tag selected")
+        } 
+        else {
+            setSelectedTags(selectedTags.filter(tg => tg !== e.target.value))
+            toast.error("Tag removed")
+        }
+    }
+  
+    const handlerCreationTag = (e) => {
+        if(tag.includes(e)) {
+            toast.error("Tag already exists")
+        }
+        if(e === "") {
+            toast.error("Tag cannot be empty")
+        }
+        if(e !== "" && tag.includes(e) === false) {
+            setTag([...tag, e])
+            toast.success("Tag created")
+        }
     }
 
   return ( show &&
@@ -66,7 +101,8 @@ function FormProducts({click, show}) {
                         price: parseInt(values.price),
                         description: description,
                         imageURL: values.imageURL,
-                        countInStock: parseInt(values.countInStock)
+                        countInStock: parseInt(values.countInStock),
+                        tags: selectedTags
                     };
                     if(description !== ""){
                         newProduct = await setNewProduct(newProduct)
@@ -123,6 +159,45 @@ function FormProducts({click, show}) {
                             helperText="Por favor ingrese el nombre del producto"
                             />
                         </Box>
+
+                        <Box margin={1}>
+                        <div>
+                            <label><strong>Categorias</strong></label>
+                            <div>
+                                {tag.length > 0 ? tag.map((tgs) => 
+                                    <div>
+                                    <input type="checkbox" name={tgs} value={tgs} placeholder={tgs} onChange={handleAddTag}/>
+                                    <label>{tgs}</label>
+                                    </div>
+                                )
+                                : <p>No hay categorias para mostrar</p>}
+                            </div>
+                        </div>
+                        <div>
+                        <p>O crea una categoria nueva:</p>
+                            <Field
+                                name="newTag"
+                                component={TextField}
+                                type="text"
+                                label="Nuevo Tag"
+                                helperText="Ingresa una categoria para el producto"
+                            />
+                            <Button
+                            sx={{margin: 1}}
+                            variant="contained"
+                            color="primary"
+                            disabled={isSubmitting}
+                            onClick={() => {
+                                handlerCreationTag(values.newTag);
+                                values.newTag = "";
+                            }}
+                            value={values.newTag}
+                            >
+                            Crear Tag
+                            </Button>
+                        </div>
+                        </Box>
+
                         <Box margin={1}>
                             <Field
                             component={TextField}
@@ -195,9 +270,10 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
     height: 100%;
     padding: 20px;
     transition: all 0.3s ease-in-out;
+    overflow-y: auto;
 `
