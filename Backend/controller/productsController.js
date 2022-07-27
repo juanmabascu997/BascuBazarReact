@@ -53,9 +53,25 @@ const updateProduct = async (req, res) => {
     }
 }
 
+const changeState = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const productID = id;
+        const product = await Product.findById(productID)
+        product.disabled = !product.disabled;
+
+        product.save();
+
+        res.send(product)
+    } catch (error) {
+        return { message: error.message };
+    }
+}
+
 module.exports = {
     getProducts,
     getProductById,
     addProduct,
-    updateProduct
+    updateProduct,
+    changeState
 }

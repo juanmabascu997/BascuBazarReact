@@ -11,7 +11,7 @@ import {
     SET_USER_COPY,
     SET_EDIT_PRODUCT,
     CLEAR_PRODUCT,
-    SET_TAGS    
+    SET_TAGS,    
 } from "./actions";
 
 
@@ -28,6 +28,7 @@ const initialState = {
     allUsersCopy: [],
     editProduct: [],
     tags: [],
+    disableProducts: [],
 }
 
 
@@ -36,7 +37,8 @@ export default function rootReducer(state = initialState, payload) {
         case GET_ALL_PRODUCTS:
             return {
             ...state,
-            products: payload.payload
+            products: payload.payload.onlyActive,
+            disableProducts: payload.payload.onlyDisabled,
             }
         case GET_A_PRODUCT:
             return {

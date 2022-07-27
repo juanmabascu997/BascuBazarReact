@@ -29,9 +29,14 @@ export async function getAllProducts() {
             dispatch(res);
           })
         }
+        const onlyActive = products.data.filter(product => product.disabled === false)
+        const onlyDisabled = products.data.filter(product => product.disabled === true)
         return dispatch({
           type: GET_ALL_PRODUCTS,
-          payload: products.data,
+          payload: {
+            onlyActive,
+            onlyDisabled
+          },
         });
       } catch (e) {
         console.error("Error: " + e.message);
@@ -185,4 +190,9 @@ export async function setEditProduct(product) {
       payload: product,
     });
   };
+}
+
+export async function deleteProduct(id) {
+    let deletedProduct = await axios.put(`api/products/update/${id}`);
+    return deletedProduct;
 }

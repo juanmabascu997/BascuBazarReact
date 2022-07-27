@@ -8,6 +8,7 @@ import { TextField} from 'formik-mui';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 function FormProducts({click, show}) {
 
@@ -105,25 +106,23 @@ function FormProducts({click, show}) {
                         tags: selectedTags
                     };
                     if(description !== ""){
-                        newProduct = await setNewProduct(newProduct)
-                        console.log(newProduct)
-                        setSubmitting(false);
-                        newProduct.status = 200 ? toast.success("Producto agregado", {
-                            position: "top-left",
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true}
-                            ) : toast.error("Error al agregar producto", {
-                                position: "top-left",
-                                autoClose: 3000,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true}
-                            )
-                        click();
+                        Swal.fire({
+                            title: `Seguro de crear ${newProduct.name} ?`,
+                            showDenyButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: 'Crear',
+                            denyButtonText: `No crear`,
+                          }).then(async (result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire('Creado!', '', 'success')
+                                newProduct = await setNewProduct(newProduct)
+                                setSubmitting(false);
+                                click();
+                            } else if (result.isDenied) {
+                              Swal.fire('Articulo no creado', '', 'info')
+                            }
+                        })
+                        
                     }
                     else{
                         toast.error("La descripcion no puede estar vacia", {

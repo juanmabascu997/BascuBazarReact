@@ -41,7 +41,7 @@ function HomeScreen() {
 
   return (
     <div className='homescreen'>
-      <h2 className='homescreen__title'>HomeScreen</h2>
+      <h2 className='homescreen__title'>Nuestros productos</h2>
       <div className='homescreen__products'>
         <div className='homescreen__productsBody'>
           {products.length > 0 ? products.map(product => (

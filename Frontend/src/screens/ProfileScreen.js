@@ -84,7 +84,10 @@ function ProfileScreen() {
                         <h1>Tus productos</h1>
                         <ul>
                             {thisUser.products.length !== 0 ? thisUser.products.map(product => (
-                                <li><strong>{product.name}</strong></li>
+                                <li>
+                                    <LittlePicture src={product.imageURL} alt=""/>
+                                    <p><strong>{product.name}</strong></p>
+                                </li>
                             )): <Italic>No tienes productos</Italic>
                             }
                         </ul>
@@ -227,7 +230,7 @@ const Container = styled.div`
     height: 100vh;
     padding: 20px;
     margin-top: 100px;
-
+    margin-bottom: 100px;
     h1 {
         text-align: center;
         font-size: 30px;
@@ -301,8 +304,10 @@ const Center = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 60%;
+    height: calc(100vh - 130px);
+    overflow-y: auto;
     background-color: #ffff;
     padding: 20px;
     border-radius: 10px;
@@ -334,6 +339,24 @@ const Products = styled.div`
         text-align: center;
         margin-bottom: 20px;
     }
+    ul {
+        padding: 0;
+        margin: 0;
+        li {
+            display:flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: baseline;
+            margin-bottom: 10px;
+            margin-top: 5px;
+            border-bottom: 1px solid #ccc;
+            font-size: 10px;
+            font-weight: lighter;
+            &:first-child{
+                margin-top: 15px;
+            }
+        }
+    }
 `
 
 const Admin = styled.p`
@@ -343,4 +366,10 @@ const Admin = styled.p`
     margin-top: 20px;
     margin-bottom: 10px;
     text-align: center;
+`
+
+const LittlePicture = styled.img`
+    margin-bottom: 5px;
+    width: 50px;
+    height: 50px;
 `

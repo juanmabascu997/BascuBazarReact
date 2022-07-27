@@ -5,34 +5,66 @@ import Backdrop from '../components/Backdrop';
 import FormProducts from '../components/FormProducts';
 import FormEditProducts from '../components/FormEditProducts';
 import { useDispatch } from 'react-redux';
-import { setEditProduct } from '../redux/actions';
+import { setEditProduct, deleteProduct, getAllProducts } from '../redux/actions';
 import { BiEdit } from 'react-icons/bi';
 import { Button } from '@mui/material';
-
+import {BiArchiveIn} from 'react-icons/bi';
+import Swal from 'sweetalert2';
 
 function AdminScreen() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [sidebarEditOpen, setSidebarEditOpen] = useState(false);
 
+
     const dispatch = useDispatch();
     const allUsers = useSelector(state => state.allUsersCopy);
     const allPromotions = useSelector(state => state.promotions);
-    const allProducts = useSelector(state => state.products);
+    const allActiveProducts = useSelector(state => state.products);
+    const allDisableProducts = useSelector(state => state.disableProducts);
     const user = useSelector(state => state.userCopy);
     const thisUser = allUsers.find(usr => usr.email === user.email)
+
     const [ screen, setScreen ] = useState("users")
+    const [ disableProducts, seeDisableProducts ] = useState("active")
 
     useEffect(() => {
         window.scrollTo(0,0)
     }
     , [])
     
-    
+    const archiveProduct = (product) => {
+        Swal.fire({
+            title: `Quieres cambiar el estado de ${product.name} ?`,
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Guardar',
+            denyButtonText: `No guardar`,
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              Swal.fire('Guardado!', '', 'success')
+              await deleteProduct(product._id)
+                getAllProducts().then(res => {
+                    dispatch(res)
+                }
+                )
+            } else if (result.isDenied) {
+              Swal.fire('Cambio no guardado', '', 'info')
+            }
+          })
+    }
+
+
+
     const setPruductToEdit = (product) => {
         setEditProduct(product).then((res) => {
             dispatch(res);
         }
         )
+    }
+
+    const handledChange = (e) => {
+        const { value } = e.target;
+        seeDisableProducts(value)
     }
 
 
@@ -77,13 +109,26 @@ function AdminScreen() {
             (<Products>
                 <h1>Productos</h1>
                 <Lista>
-                    {allProducts.length !== 0 ? allProducts.map(usr => {
+                    <select onChange={handledChange}>
+                        <option value="active">Activos</option>
+                        <option value="disabled">Desactivados</option>
+                    </select>
+                    {disableProducts === "disabled"? allDisableProducts?.map(usr => {
+                            return <li>
+                                <label>{usr.name}</label>
+                                <div>
+                                    <button onClick={()=>archiveProduct(usr)}><BiArchiveIn/></button>
+                                </div>
+                            </li>
+                        }) : allActiveProducts.length !== 0 ? allActiveProducts.map(usr => {
                         return <li>
                             <label>{usr.name}</label>
-                            <button onClick={()=> {setPruductToEdit(usr);setSidebarEditOpen(true)}}><BiEdit/></button>
+                            <div>
+                                <button onClick={()=> {setPruductToEdit(usr);setSidebarEditOpen(true)}}><BiEdit/></button>
+                                <button onClick={()=>archiveProduct(usr)}><BiArchiveIn/></button>
+                            </div>
                         </li> 
-                    }
-                    ) : <li>No hay productos</li>}
+                    }) : <li>No hay productos</li>}
                 </Lista>
                 <Button className='css-pvr4uq-MuiButtonBase-root-MuiButton-root' onClick={()=> setSidebarOpen(true)}>Agregar producto</Button>
             </Products>) : null}
@@ -110,7 +155,7 @@ function AdminScreen() {
 
         <Backdrop click={()=> {setSidebarOpen(false); setSidebarEditOpen(false)}} show={sidebarOpen || sidebarEditOpen}/>
         <FormProducts click={()=> setSidebarOpen(false)} show={sidebarOpen}/>
-        <FormEditProducts close={()=> setSidebarEditOpen(false)} show={sidebarEditOpen}/>
+        <FormEditProducts click={()=> setSidebarEditOpen(false)} show={sidebarEditOpen}/>
 
     </Container>)
     }
@@ -151,24 +196,6 @@ const Container = styled.div`
     }
 `
 
-const Perfil = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    img {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        margin-bottom: 20px;
-    }
-    h1 {
-        text-align: center;
-        margin-bottom: 10px;
-    }
-`
 const Left  = styled.div`
     display: flex;
     flex-direction: column;
@@ -201,8 +228,9 @@ const Center = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 60%;
+    height: calc(100vh - 130px);
     background-color: #ffff;
     padding: 20px;
     border-radius: 10px;
@@ -221,30 +249,35 @@ const Lista = styled.ul`
     list-style: none;
     padding: 0;
     margin: 0;
-    overflow-y: auto;
     li{
         display: flex;
         text-align: center;
         align-items: center;
-
         justify-content: space-between;
         margin-bottom: 10px;
         margin-top: 10px;
-        font-size: 10px;
+        font-size: 12px;
+
+        div{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            button{
+                display: flex;
+                background-color: #FF7701;
+                border: none;
+                border-radius: 10px;
+                padding: 5px;
+                font-size: 15px;
+                font-weight: lighter;
+                color: #000;
+                cursor: pointer;
+            }
+        }
 
         &:first-child{
             margin-top: 15px;
-        }
-        button{
-            display: flex;
-            background-color: #FF7701;
-            border: none;
-            border-radius: 10px;
-            padding: 5px;
-            font-size: 15px;
-            font-weight: lighter;
-            color: #000;
-            cursor: pointer;
         }
     }
 `
@@ -254,7 +287,6 @@ const Products = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: fl;
     width: 100%;
     margin-top: 20px;
     margin-bottom: 10px;

@@ -9,6 +9,7 @@ import { Formik, Form, Field } from 'formik';
 import { TextField} from 'formik-mui';
 import styled from 'styled-components';
 import {FiDelete} from 'react-icons/fi';
+import Swal from 'sweetalert2';
 
 
 function FormEditProducts({click, show}) {
@@ -67,7 +68,6 @@ function FormEditProducts({click, show}) {
   return ( show &&
     <div className={sideDrawerClass.join(" ")}>
         <h1>Editar Producto</h1>
-        <p>Elegir el producto a modificar:</p>
         {productToEdit.hasOwnProperty("name") !== undefined ? 
         <Formik
         initialValues={ {
@@ -122,24 +122,22 @@ function FormEditProducts({click, show}) {
                     )
                 }
                 else{
-                    updateProduct = await updateProducts(productToEdit._id, updateProduct)
-                    setSubmitting(false);
-                    updateProduct.status = 200 ? toast.success("Producto agregado", {
-                        position: "top-left",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true}
-                        ) : toast.error("Error al agregar producto", {
-                            position: "top-left",
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true}
-                        )
-                    click();
+                    Swal.fire({
+                        title: `Quieres guardar los cambios de ${updateProduct.name} ?`,
+                        showDenyButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: 'Guardar',
+                        denyButtonText: `No guardar`,
+                      }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire('Guardado!', '', 'success')
+                            await updateProducts(productToEdit._id, updateProduct)
+                            setSubmitting(false);
+                            click();
+                        } else if (result.isDenied) {
+                          Swal.fire('Cambios no guardados', '', 'info')
+                        }
+                    })
                 }
             }}
         >

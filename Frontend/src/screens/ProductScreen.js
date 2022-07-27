@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { getAProduct } from '../redux/actions';
 import './ProductScreen.css';
 import { addCart } from '../redux/actions';
+import styled from 'styled-components';
 
 function ProductScreen() {
   const { id } = useParams();
@@ -59,6 +60,12 @@ function ProductScreen() {
         </div>
         <div className='left__info'>
           <p className='left__name'>{product.name}</p>
+          <Tags>
+            {product.tags?.map((tag, index) => {
+              return <div key={index}><p><strong>{tag}</strong></p></div>
+            })
+            }
+          </Tags>
           <p className='left__price'>Precio: ${product.price}</p>
           <p className='left__description'>Description:{product.description}</p>
         </div>
@@ -91,3 +98,17 @@ function ProductScreen() {
 }
 
 export default ProductScreen
+
+const Tags = styled.div`
+    display: flex;
+    flex-direction: row;
+    div {
+        color: #dddddd;
+        border: 1px solid #ccc;
+        background-color: #222222;
+        margin: 1px;
+        padding: 0.5rem;
+        border-radius: 5px;
+        margin: 5px;
+    }   
+`
