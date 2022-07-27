@@ -220,7 +220,8 @@ function FormEditProducts({click, show}) {
                         <textarea 
                             value={description} 
                             onChange={handleChange} 
-                            className="texarea__creationnote" 
+                            className="texarea__creationnote"
+                            placeholder='Ingrese la descripcion del producto' 
                         />             
                         {description.length > 0 && <p>Large of note {description.length}/254</p>}
                     </Box>
@@ -287,7 +288,6 @@ const TagsSelected = styled.div`
         margin: 1px;
         margin-bottom: 1px;
         padding: 0.5rem;
-        padding-bottom: 0px;
         border-radius: 5px;
     }   
 `
