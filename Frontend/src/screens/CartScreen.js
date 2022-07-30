@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setUserCopy } from '../redux/actions';
 import { useDispatch } from 'react-redux';
+import { Button } from '@mui/material';
 
 function CartScreen() {
   const { user } = useAuth0()
@@ -83,7 +84,7 @@ function CartScreen() {
                 <p>$0</p>
               </div>
           )}
-          <button className='css-pvr4uq-MuiButtonBase-root-MuiButton-root' onClick={clickHandler}>Comprar</button>
+          <Button className='css-pvr4uq-MuiButtonBase-root-MuiButton-root' onClick={clickHandler}>Comprar</Button>
         </div>
       </div>
     </div>

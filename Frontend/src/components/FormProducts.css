@@ -1,13 +1,16 @@
 .formproduct{
     width: 70%;
     height: 100vh;
-    background-color: #dddddd;
+    background-color: #ffff;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 200;
     transform: translateX(-100%);
     transition: all 0.3s ease-out;
+}
+.closeButton{
+    display: none;
 }
 
 .show{
@@ -16,4 +19,46 @@
     -moz-transform: translateX(0);
     -ms-transform: translateX(0);
     -o-transform: translateX(0);
+}
+
+@media (max-width: 960px){  
+    .formproduct{
+        width: 100%;
+    }
+    .closeButton{
+        display: flex;
+        justify-self: center;
+        align-self: center;
+        margin: 0 auto;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        background-color: transparent;
+        outline: 0;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        vertical-align: middle;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        -webkit-text-decoration: none;
+        text-decoration: none;
+        color: inherit;
+        font-family: "Roboto","Helvetica","Arial",sans-serif;
+        font-weight: 500;
+        font-size: 0.875rem;
+        line-height: 1.75;
+        letter-spacing: 0.02857em;
+        text-transform: uppercase;
+        min-width: 64px;
+        padding: 6px 8px;
+        border-radius: 4px;
+        -webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        color: #1976d2;
+    }
 }

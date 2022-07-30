@@ -2,6 +2,7 @@ import {
     GET_ALL_PRODUCTS, 
     GET_A_PRODUCT, 
     GET_ALL_INFORMATION, 
+    GET_ALL_FILTER_PRODUCTS,
     ADD_CART, 
     CLEAR_CART, 
     REMOVE_ONE_FROM_CART, 
@@ -12,6 +13,7 @@ import {
     SET_EDIT_PRODUCT,
     CLEAR_PRODUCT,
     SET_TAGS,    
+
 } from "./actions";
 
 
@@ -29,6 +31,7 @@ const initialState = {
     editProduct: [],
     tags: [],
     disableProducts: [],
+    filterProducts: []
 }
 
 
@@ -45,6 +48,12 @@ export default function rootReducer(state = initialState, payload) {
             ...state,
             product: payload.payload
             }
+        case GET_ALL_FILTER_PRODUCTS:
+            return {
+                ...state,
+                filterProducts: payload.payload
+            }
+
         case CLEAR_PRODUCT:
             return {
                 ...state,

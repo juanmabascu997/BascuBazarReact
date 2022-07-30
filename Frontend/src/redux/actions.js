@@ -13,6 +13,7 @@ export const GET_ALL_USERS = "GET_ALL_USERS";
 export const SET_USER_COPY = "SET_USER_COPY";
 export const SET_EDIT_PRODUCT = "SET_EDIT_PRODUCT";
 export const SET_TAGS = "SET_TAGS";
+export const GET_ALL_FILTER_PRODUCTS = "GET_ALL_FILTER_PRODUCTS";
 
 export async function getAllProducts() {
     return async function (dispatch) {
@@ -70,6 +71,28 @@ export async function getAProduct(id) {
     }
   };
 }
+
+export async function getFilterProducts(filter, products){
+  return async function (dispatch) {
+    try {
+      if(filter === "all" || filter === ""){
+        return dispatch({
+          type: GET_ALL_FILTER_PRODUCTS,
+          payload: [],
+        });
+      } else {
+      const dataFilter = products.filter(product => product.tags.includes(filter))
+      return dispatch({
+        type: GET_ALL_FILTER_PRODUCTS,
+        payload: dataFilter,
+      });
+    }
+    } catch (e) {
+      console.error("Error: " + e.message);
+    }
+  }
+}
+
 
 export async function clearProduct() {
   return async function (dispatch) {

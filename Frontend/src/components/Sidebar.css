@@ -78,18 +78,18 @@
     text-decoration: none;
     color: #222222;
     font-size: 1.6rem;
-}
-.sidedrawer__login > button{
-    color: #222222;
-    background: #dddddd;
-    border: none;
-    margin-right: 8px;
+    cursor: pointer;
 }
 
 .sidedrawer__login:hover{
     color: #dddddd;
     background: #222222;
 }
+
+.sidedrawer__login > svg{
+    margin-right: 8px;
+}
+
 
 .sidedrawer__cartbadge{
     display: flex;
@@ -114,6 +114,7 @@
     color: #222222;
 
 }
+
 
 @media (min-width: 960px) {
     .sidedrawer{

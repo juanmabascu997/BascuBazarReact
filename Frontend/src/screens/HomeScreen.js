@@ -8,6 +8,8 @@ import styled from 'styled-components';
 
 function HomeScreen() {
   const products = useSelector(state => state.products);
+  const filter = useSelector(state => state.filterProducts);
+
   const { user, isAuthenticated, isLoading } = useAuth0();
   const dispatch = useDispatch();
   
@@ -44,9 +46,11 @@ function HomeScreen() {
       <h2 className='homescreen__title'>Nuestros productos</h2>
       <div className='homescreen__products'>
         <div className='homescreen__productsBody'>
-          {products.length > 0 ? products.map(product => (
+          {filter.length > 0 ? filter.map((product) => 
             <Product product={product} />
-          )) : null}
+          ) : products.map((product) =>
+            <Product product={product} />
+          )}
         </div>
         <Side className='homescreen__sidebar'>
             <div>

@@ -194,6 +194,13 @@ const Container = styled.div`
             margin-top: 15px;
         }
     }
+    @media (max-width: 960px){  
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
 `
 
 const Left  = styled.div`
@@ -223,6 +230,12 @@ const Left  = styled.div`
             }
         }
     }
+    @media (max-width: 960px){  
+        width: 80%;
+        height: 100%;
+        padding: 10px;
+        margin-right: 0;
+    }
 `
 const Center = styled.div`
     display: flex;
@@ -238,7 +251,11 @@ const Center = styled.div`
     box-shadow: 0px 0px 2px #ccc;
     border: 1px solid #ccc;
     overflow-y: auto;
-
+    @media (max-width: 960px){  
+        width: 80%;
+        height: 100%;
+        padding: 10px;
+    }
 `
 
 const Italic = styled.p`
@@ -294,5 +311,4 @@ const Products = styled.div`
         text-align: center;
         margin-bottom: 20px;
     }
-
 `

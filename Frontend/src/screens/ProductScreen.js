@@ -79,16 +79,6 @@ function ProductScreen() {
             Stock: <span>{product.countInStock}</span> 
           </p>
           <p>
-            Cantidad: 
-            <select>
-              <option value='1'>1</option>
-              <option value='2'>2</option>
-              <option value='3'>3</option>
-              <option value='4'>4</option>
-              <option value='5'>5</option>
-            </select>
-          </p>
-          <p>
             <Button className='css-h0uqyz-MuiButtonBase-root-MuiButton-root' onClick={addToCarrito}>Añadir a carrito</Button>
           </p>
         </div>

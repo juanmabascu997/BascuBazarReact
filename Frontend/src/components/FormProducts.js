@@ -61,6 +61,9 @@ function FormProducts({click, show}) {
 
   return ( show &&
     <div className={sideDrawerClass.join(" ")}>
+        <button className='closeButton' onClick={click}>
+            Volver
+        </button>
         <Container>
             <Formik
                 initialValues={ {
@@ -99,10 +102,10 @@ function FormProducts({click, show}) {
 
                     let newProduct = {
                         name: values.productName,
-                        price: parseInt(values.price),
+                        price: parseInt(values.price, 10),
                         description: description,
                         imageURL: values.imageURL,
-                        countInStock: parseInt(values.countInStock),
+                        countInStock: parseInt(values.countInStock, 10),
                         tags: selectedTags
                     };
                     if(description !== ""){
@@ -149,6 +152,7 @@ function FormProducts({click, show}) {
                 }) => (
                     <Form>
                         <h1>Agregar un producto</h1>
+                        <hr/>
                         <Box margin={1}>
                             <Field
                             component={TextField}
@@ -160,41 +164,42 @@ function FormProducts({click, show}) {
                         </Box>
 
                         <Box margin={1}>
-                        <div>
-                            <label><strong>Categorias</strong></label>
                             <div>
-                                {tag.length > 0 ? tag.map((tgs) => 
-                                    <div>
-                                    <input type="checkbox" name={tgs} value={tgs} placeholder={tgs} onChange={handleAddTag}/>
-                                    <label>{tgs}</label>
-                                    </div>
-                                )
-                                : <p>No hay categorias para mostrar</p>}
+                                <label><strong>Categorias</strong></label>
+                                <div>
+                                    {tag.length > 0 ? tag.map((tgs) => 
+                                        <div>
+                                        <input type="checkbox" name={tgs} value={tgs} placeholder={tgs} onChange={handleAddTag}/>
+                                        <label>{tgs}</label>
+                                        </div>
+                                    )
+                                    : <p>No hay categorias para mostrar</p>}
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                        <p>O crea una categoria nueva:</p>
-                            <Field
-                                name="newTag"
-                                component={TextField}
-                                type="text"
-                                label="Nuevo Tag"
-                                helperText="Ingresa una categoria para el producto"
-                            />
-                            <Button
-                            sx={{margin: 1}}
-                            variant="contained"
-                            color="primary"
-                            disabled={isSubmitting}
-                            onClick={() => {
-                                handlerCreationTag(values.newTag);
-                                values.newTag = "";
-                            }}
-                            value={values.newTag}
-                            >
-                            Crear Tag
-                            </Button>
-                        </div>
+                            <hr/>
+                            <div>
+                            <p>O crea una categoria nueva:</p>
+                                <Field
+                                    name="newTag"
+                                    component={TextField}
+                                    type="text"
+                                    label="Nuevo Tag"
+                                    helperText="Ingresa una categoria para el producto"
+                                />
+                                <Button
+                                sx={{margin: 1}}
+                                variant="contained"
+                                color="primary"
+                                disabled={isSubmitting}
+                                onClick={() => {
+                                    handlerCreationTag(values.newTag);
+                                    values.newTag = "";
+                                }}
+                                value={values.newTag}
+                                >
+                                Crear Tag
+                                </Button>
+                            </div>
                         </Box>
 
                         <Box margin={1}>
@@ -259,6 +264,7 @@ function FormProducts({click, show}) {
                 )}
             </Formik>
         </Container>
+
     </div>
   )
 }
@@ -275,4 +281,5 @@ const Container = styled.div`
     padding: 20px;
     transition: all 0.3s ease-in-out;
     overflow-y: auto;
+    padding-bottom: 30px;
 `

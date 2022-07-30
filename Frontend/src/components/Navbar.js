@@ -1,18 +1,32 @@
 import './Navbar.css';
 import {Link} from 'react-router-dom';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import LoginButton from './Login';
-import LogoutButton from './LogOut';
+import { useDispatch, useSelector } from 'react-redux';
 import { useAuth0 } from "@auth0/auth0-react";
-import { FiUser } from "react-icons/fi";
 import { FiShoppingBag } from "react-icons/fi";
 import icon from '../img/PNG 150 PX.png';
 import styled from 'styled-components';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {RiUser6Line, RiUser6Fill} from 'react-icons/ri';
+import { getFilterProducts } from '../redux/actions';
 
 function Navbar({click}) {
     const cart = useSelector(state => state.cart);
     const { user } = useAuth0()
+    const tags = useSelector(state => state.tags);
+    const products = useSelector(state => state.products);
+    const dispatch = useDispatch();
+    const {loginWithPopup, logout} = useAuth0()
+
+    const [age, setAge] = React.useState('');
+
+    const handleChange = (e) => {
+        setAge(e.target.value);
+        getFilterProducts(e.target.value, products).then((res)=>{
+            dispatch(res)
+        }
+        )
+    };
 
   return (
     <nav className='navbar'>
@@ -25,19 +39,38 @@ function Navbar({click}) {
             {!user? null :
             <li>
                 <Link to="/profile" className='cart__profile'>
-                    <FiUser />
-                    <p>Mi perfil</p>
+                    <RiUser6Fill />
                 </Link>
             </li>
             }
 
+            <li className='navbar__user'>
+                {!user?<RiUser6Line onClick={()=>loginWithPopup({returnTo:window.location.origin})}/>:<p onClick={logout}><em>Log out</em></p>}
+            </li>
+
             <li>
-                {!user?<LoginButton/>:<LogoutButton/>}
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                    <InputLabel id="demo-simple-select-standard-label">Filtros: </InputLabel>
+                    <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={age}
+                    onChange={handleChange}
+                    label="Age"
+                    >
+                    <MenuItem value="all">
+                        <em>Todas</em>
+                    </MenuItem>
+                        {tags?.map(tag => (
+                            <MenuItem key={tag} value={tag}>{tag}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </li>
 
             <li>
                 <Link to="/" className='cart__shop'>
-                    <FiShoppingBag/> <span>Tienda</span>
+                    <FiShoppingBag/>
                 </Link>
             </li>   
 

@@ -105,9 +105,6 @@ function ProfileScreen() {
                                 if (!values.name) {
                                     errors.name = 'Required';
                                 }
-                                if (!values.email) {
-                                    errors.email = 'Required';
-                                }
                                 if (!values.address) {
                                     errors.address = 'Required';
                                 }
@@ -119,7 +116,6 @@ function ProfileScreen() {
                             onSubmit={ async (values, { setSubmitting }) => {
                                 let userData = {
                                     name: values.name,
-                                    email: values.email,
                                     address: values.address,
                                     phone: values.phone,
                                 };
@@ -160,14 +156,6 @@ function ProfileScreen() {
                                             type="text" 
                                             name="name"
                                             label="Nombre"
-                                            />
-                                        </Box>
-                                        <Box margin={1}>
-                                            <Field
-                                            component={TextField}
-                                            type="email"
-                                            name="email"
-                                            label="Email"
                                             />
                                         </Box>
                                         <Box margin={1}>
@@ -252,6 +240,13 @@ const Container = styled.div`
             margin-top: 15px;
         }
     }
+    @media (max-width: 960px){  
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
 `
 
 const Perfil = styled.div`
@@ -299,6 +294,10 @@ const Left  = styled.div`
             }
         }
     }
+    @media (max-width: 960px){  
+        width: 100%;
+        margin-right: 0px;
+    }
 `
 const Center = styled.div`
     display: flex;
@@ -314,6 +313,10 @@ const Center = styled.div`
     margin-bottom: 20px;
     box-shadow: 0px 0px 2px #ccc;
     border: 1px solid #ccc;
+    @media (max-width: 960px){  
+        width: 100%;
+        margin-right: 0px;
+    }
 `
 
 const Italic = styled.p`
