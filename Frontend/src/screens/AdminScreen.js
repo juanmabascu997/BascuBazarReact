@@ -273,7 +273,7 @@ const Lista = styled.ul`
         justify-content: space-between;
         margin-bottom: 10px;
         margin-top: 10px;
-        font-size: 12px;
+        font-size: 18px;
 
         div{
             display: flex;

@@ -203,7 +203,8 @@ export async function updateUser(id, data) {
 }
 
 export async function updateUserProducts(id, data) {
-  let userProductUpdate = await axios.put(`/api/users/products/${id}`, data);
+  console.log(data)
+  let userProductUpdate = await axios.put(`api/userproducts/${id}`, data);
   return userProductUpdate;
 }
 

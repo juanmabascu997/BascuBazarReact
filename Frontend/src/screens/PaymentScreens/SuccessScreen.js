@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearCart, updateUserProducts } from '../../redux/actions';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
+import { useLocation } from "react-router-dom";
 
 function SuccessScreen() {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -11,10 +12,36 @@ function SuccessScreen() {
   const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
 
+  const query = new URLSearchParams(useLocation().search);
+
+  const collection_id = query.get('collection_id');
+  const collection_status = query.get('collection_status');
+  const payment_id = query.get('payment_id');
+  const payment_type = query.get('payment_type');
+  const status = query.get('status');
+  const merchant_order_id = query.get('merchant_order_id');
+  const preference_id = query.get('preference_id');
+  const site_id = query.get('site_id');
+  
+
   useEffect(() => {
     if(!isLoading){
       const thisUser = allUsers.find(usr => usr.email === user.email)
-      updateUserProducts(thisUser._id, cart)
+      const newCartData = cart.map(product => {
+        return {
+          ...product,
+          collection_id: collection_id,
+          collection_status: collection_status,
+          payment_id: payment_id,
+          status: status,
+          payment_type: payment_type,
+          merchant_order_id: merchant_order_id,
+          preference_id: preference_id,
+          site_id: site_id,
+        }
+      }
+      )
+      updateUserProducts(thisUser._id, newCartData)
       clearCart().then((res) => {
         dispatch(res);
       }

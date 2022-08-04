@@ -10,9 +10,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-
 import styled from 'styled-components'
 import { Container } from '@mui/system';
+import Swal from 'sweetalert2';
 
 function BuyScreens() {
     const dispatch = useDispatch()
@@ -31,14 +31,14 @@ function BuyScreens() {
     }
     , [])
 
-    const createData = (purchases, quantity, price, client, payment) =>{
-        return { purchases, quantity, price, client, payment };
+    const createData = (purchases, quantity, price, client, payment, id_compra) =>{
+        return { purchases, quantity, price, client, payment, id_compra };
       }
 
     useEffect(() => {
         setBuys(purchases)
         buys.forEach(buy => {
-            rows.push(createData(buy.name, buy.quantity, buy.price, buy.user, "true"))
+            rows.push(createData(buy.name, buy.quantity, buy.price, buy.user, buy.status, buy.collection_id))
             }
         )
         setRows(rows)
@@ -66,6 +66,12 @@ function BuyScreens() {
           minWidth: 170,
           align: 'right',
         },
+        {
+            id: 'id_compra',
+            label: 'ID Compra',
+            minWidth: 170,
+            align: 'right',
+        },
       ];
   
     const handleChangePage = (event, newPage) => {
@@ -77,10 +83,29 @@ function BuyScreens() {
         setPage(0);
     };
 
+    const hanlderInfo = (rowInfo) => {
+        const allInfo = buys.find(buy => (buy.name === rowInfo.purchases && buy.quantity === rowInfo.quantity && buy.price === rowInfo.price && buy.user === rowInfo.client && buy.status === rowInfo.payment && buy.collection_id === rowInfo.id_compra))
+        Swal.fire({
+            title: `${rowInfo.purchases}`,
+            text: `Catidad: ${rowInfo.quantity},
+            Importe: ${rowInfo.price},
+            Cliente: ${rowInfo.client},
+            Pago: ${rowInfo.payment}
+            ID Compra: ${rowInfo.id_compra},
+            ID de orden: ${allInfo.merchant_order_id}
+            `,
+            confirmButtonText: 'Ok',
+            }).then(() => {
+                window.scrollTo(0,0)
+            }
+        )
+    }
+
+
   return (
     <Container>
         <h1>Compras</h1>
-        <Paper sx={{ width: '100%', overflow: 'hidden', height: '100%' }}>
+        <Paper sx={{ width: '100%', overflow: 'hidden'}}>
             <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                 <TableHead>
@@ -99,7 +124,7 @@ function BuyScreens() {
                 <TableBody>
                     {rowsView.length !== 0? rowsView.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                         return (
-                        <TableRow hover role="checkbox" tabIndex={-1}>
+                        <TableRow hover role="checkbox" tabIndex={-1} onClick={()=>hanlderInfo(row)}>
                             {columns.map((column) => {
                             const value = row[column.id];
                             return (
@@ -112,7 +137,7 @@ function BuyScreens() {
                             })}
                         </TableRow>
                         );
-                    }): <div>No hay compras</div>}
+                    }): <p>No hay compras</p>}
                 </TableBody>
                 </Table>
             </TableContainer>
@@ -131,3 +156,4 @@ function BuyScreens() {
 }
 
 export default BuyScreens
+

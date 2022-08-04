@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { getUsers, getUserByID, addUser, updateUser, updateUserProduct} = require('../controller/usersController')
+const { getUsers, getUserByID, addUser, updateUser} = require('../controller/usersController')
 
 //Get all users
 //@route GET /api/users
@@ -25,13 +25,6 @@ router.post('/', addUser)
 //@access Public
 
 router.put('/:id', updateUser)
-
-//Update a user products
-//@route PUT /api/users/:id
-//@access Public
-
-router.put('/products/:id', updateUserProduct)
-
 
 
 

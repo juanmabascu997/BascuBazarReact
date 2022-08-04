@@ -8,6 +8,7 @@ const informationRoutes = require('./routes/informationRoutes')
 const paymentsMercadoPago = require('./routes/paymentsMercadoPago')
 const usersRoutes = require('./routes/usersRoutes')
 const purchaseRoutes = require('./routes/purchasesRoutes')
+const userproductsRoutes = require('./routes/userproductsRoutes')
 
 const cors = require('cors');
 
@@ -22,6 +23,7 @@ app.use(cors());
 app.use('/api/products', productsRoutes)
 app.use('/api/users', usersRoutes)
 app.use('/api/information', informationRoutes)
+app.use('/api/userproducts', userproductsRoutes)
 app.use('/payments/mercadopago', paymentsMercadoPago);
 app.use('/api/purchase', purchaseRoutes);
 
