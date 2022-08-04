@@ -14,6 +14,7 @@ export const SET_USER_COPY = "SET_USER_COPY";
 export const SET_EDIT_PRODUCT = "SET_EDIT_PRODUCT";
 export const SET_TAGS = "SET_TAGS";
 export const GET_ALL_FILTER_PRODUCTS = "GET_ALL_FILTER_PRODUCTS";
+export const GET_ALL_PURCHASES = "GET_ALL_PURCHASES";
 
 export async function getAllProducts() {
     return async function (dispatch) {
@@ -169,6 +170,16 @@ export async function getUsers() {
   };
 }
 
+export async function getAllPurchases() {
+  return async function (dispatch) {
+    let allPurchases = await axios.get("/api/purchase/");
+    return dispatch({
+      type: GET_ALL_PURCHASES,
+      payload: allPurchases.data,
+    });
+  };
+}
+
 export async function setUser(user) {
   let userToCreate = {
     name: user.name,
@@ -191,9 +202,13 @@ export async function updateUser(id, data) {
     return allUsers;
 }
 
+export async function updateUserProducts(id, data) {
+  let userProductUpdate = await axios.put(`/api/users/products/${id}`, data);
+  return userProductUpdate;
+}
+
 export async function updateProducts(id, data) {
   let userUpdate = await axios.put(`/api/products/products/${id}`, data);
-  console.log(userUpdate);
   return userUpdate;
 }
 

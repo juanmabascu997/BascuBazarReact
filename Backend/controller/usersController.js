@@ -47,7 +47,7 @@ const updateUser = async (req, res) => {
 const updateUserProduct = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
-        user.products.push(...req.body.data)
+        user.products.push(...req.body)
         const updatedUser = await user.save()
         res.send(updatedUser)
     } catch (err) {
@@ -55,10 +55,11 @@ const updateUserProduct = async (req, res) => {
     }
 }
 
+
 module.exports = {
     getUsers,
     getUserByID,
     addUser,
     updateUser,
-    updateUserProduct
+    updateUserProduct,
 }

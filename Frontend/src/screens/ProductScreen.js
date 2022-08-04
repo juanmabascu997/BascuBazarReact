@@ -66,8 +66,8 @@ function ProductScreen() {
             })
             }
           </Tags>
-          <p className='left__price'>Precio: ${product.price}</p>
-          <p className='left__description'>Description:{product.description}</p>
+          <p className='left__price'>Precio por unidad: ${product.price}</p>
+          <p className='left__description'>Descripción:{product.description}</p>
         </div>
       </div>
       <div className='productscreen__right'>

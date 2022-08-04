@@ -1,10 +1,10 @@
 const axios = require("axios");
 
 class PaymentService {
-  async createPayment(data) {
+  async createPayment(data, user) {
     const url = "https://api.mercadopago.com/checkout/preferences";
 
-    const itemsForBuy = data.items.map(item => {
+    const itemsForBuy = data.map(item => {
         return {
             id: item._id,
             title: item.name,
@@ -12,24 +12,13 @@ class PaymentService {
             picture_url: item.imageURL,
             quantity: item.quantity,
             currency_id: "ARS",
-            unit_price: item.price
+            unit_price: item.price,
         }
     }
     );
-
     const body = {
-      payer_email: "test_user_12762470@testuser.com",
+      payer_email: user.email,
       items: itemsForBuy,
-    //   items: [
-    //     {
-    //       title: "Dummy Title",
-    //       description: "Dummy description",
-    //       picture_url: "http://www.myapp.com/myimage.jpg",
-    //       category_id: "category123",
-    //       quantity: 1,
-    //       unit_price: 10
-    //     }
-    //   ],
       back_urls: {
         failure: "http://localhost:3000/failure",
         pending: "http://localhost:3000/pending",
@@ -59,7 +48,7 @@ class PaymentService {
         currency_id: "ARS"
       },
       back_url: "https://google.com.ar",
-      payer_email: "test_user_12762470@testuser.com"
+      payer_email: user.email
     };
 
     const subscription = await axios.post(url, body, {

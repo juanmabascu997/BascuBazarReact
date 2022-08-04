@@ -10,6 +10,8 @@ import { BiEdit } from 'react-icons/bi';
 import { Button } from '@mui/material';
 import {BiArchiveIn} from 'react-icons/bi';
 import Swal from 'sweetalert2';
+import BuyScreens from './AdminScreens/BuyScreens';
+import StadisticScreen from './AdminScreens/StadisticScreen';
 
 function AdminScreen() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -76,7 +78,7 @@ function AdminScreen() {
     (<Container>
         <Left>
             <h1>Admin</h1>
-            <h2>Hola {thisUser.name}!</h2>
+            <h2>Hola {thisUser?.name}!</h2>
             <div>
                 <ul>
                     <li>
@@ -90,6 +92,9 @@ function AdminScreen() {
                     </li>
                     <li>
                         <button value="estadistics" onClick={handlerMenu}>Estadisticas</button>
+                    </li>
+                    <li>
+                        <button value="buys" onClick={handlerMenu}>Compras</button>
                     </li>
                 </ul>
             </div>
@@ -143,14 +148,9 @@ function AdminScreen() {
                 </ul>
             </div>) : null}
             {screen === "estadistics" ?
-            (<div>
-                <h1>Estadisticas</h1>
-                <ul>
-                    <li>
-                        Aca irian las estadisticas, como cuales productos se vendieron, etc.
-                    </li>
-                </ul>
-            </div>) : null}
+            (<StadisticScreen/>) : null}
+            {screen === "buys" ?
+            (<BuyScreens/>) : null}
         </Center>  
 
         <Backdrop click={()=> {setSidebarOpen(false); setSidebarEditOpen(false)}} show={sidebarOpen || sidebarEditOpen}/>

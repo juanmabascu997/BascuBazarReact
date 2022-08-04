@@ -13,7 +13,7 @@ import {
     SET_EDIT_PRODUCT,
     CLEAR_PRODUCT,
     SET_TAGS,    
-
+    GET_ALL_PURCHASES
 } from "./actions";
 
 
@@ -31,7 +31,8 @@ const initialState = {
     editProduct: [],
     tags: [],
     disableProducts: [],
-    filterProducts: []
+    filterProducts: [],
+    allPurchases: []
 }
 
 
@@ -47,6 +48,11 @@ export default function rootReducer(state = initialState, payload) {
             return {
             ...state,
             product: payload.payload
+            }
+        case GET_ALL_PURCHASES:
+            return {
+            ...state,
+            allPurchases: payload.payload
             }
         case GET_ALL_FILTER_PRODUCTS:
             return {

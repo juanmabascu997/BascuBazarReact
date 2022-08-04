@@ -20,7 +20,6 @@ function FormEditProducts({click, show}) {
     const [tag, setTag] = React.useState(tags);
     const [selectedTags, setSelectedTags] = React.useState(productToEdit?.tags);
 
-    console.log(selectedTags);
     const sideDrawerClass = ["edit"]
 
     if (show) {

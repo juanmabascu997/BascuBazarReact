@@ -44,8 +44,8 @@ function Product({product}) {
     <ProductCard className='product'>
         <img src={product.imageURL} alt=''/>          
         <div className='product__info'>
-            <h1 className='info__name'>{product.name}</h1>
-            <p className='info__price'>${product.price}</p>
+            <Name>{product.name}</Name>
+            <p className='info__price'>Precio por unidad: ${product.price}</p>
 
             <Link to={`/product/${product._id}`}>
                 <Button className='css-pvr4uq-MuiButtonBase-root-MuiButton-root'>Ver más</Button>
@@ -78,15 +78,11 @@ const ProductCard = styled.div`
         width: 100%;
         height: 100%;
         padding: 20px;
-        .info__name{
-            margin-bottom: 10px;
-        }
         .info__price{
             font-size: 15px;
             font-weight: bold;
             margin-bottom: 10px;
         }
-        
         a{
           text-decoration: none;
           button{
@@ -105,3 +101,11 @@ const ProductCard = styled.div`
 
 `
 
+const Name = styled.h2`
+    font-size: 1.5rem;
+    font-weight: lighter;
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`

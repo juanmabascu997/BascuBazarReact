@@ -30,7 +30,8 @@ function CartScreen() {
           dispatch(res);
         });
         axios.post('/payments/mercadopago/payment', {
-          items: cartItems
+          items: cartItems,
+          user: user,
         }).then(res => {
           window.location.href = res.data.init_point;
           // window.open(res.data.init_point, '_blank', 'noopener,noreferrer');

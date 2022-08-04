@@ -7,8 +7,7 @@ import { getUsers } from '../redux/actions';
 import { Formik, Form, Field } from 'formik';
 import { Box,Button } from '@mui/material';
 import { TextField} from 'formik-mui';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
 
 
 function ProfileScreen() {
@@ -125,16 +124,8 @@ function ProfileScreen() {
                                 }
                                 );
                                 setThisUser(userUpdate.data)
-
                                 setSubmitting(false);
-                                toast.success("Perfil modificado", {
-                                    position: "bottom-rigth",
-                                    autoClose: 3000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true}
-                                    )
+                                Swal.fire('Perfil guardado!', '', 'success')
                             }}
                         >
                             {({

@@ -7,6 +7,7 @@ const productsRoutes = require('./routes/productsRoutes')
 const informationRoutes = require('./routes/informationRoutes')
 const paymentsMercadoPago = require('./routes/paymentsMercadoPago')
 const usersRoutes = require('./routes/usersRoutes')
+const purchaseRoutes = require('./routes/purchasesRoutes')
 
 const cors = require('cors');
 
@@ -22,7 +23,7 @@ app.use('/api/products', productsRoutes)
 app.use('/api/users', usersRoutes)
 app.use('/api/information', informationRoutes)
 app.use('/payments/mercadopago', paymentsMercadoPago);
-
+app.use('/api/purchase', purchaseRoutes);
 
 const PORT = process.env.PORT || 3001
 

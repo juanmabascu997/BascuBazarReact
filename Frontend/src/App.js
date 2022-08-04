@@ -1,4 +1,5 @@
 import './App.css';
+import SmoothScroll from "smooth-scroll";
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen.js';
@@ -20,6 +21,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import AdminScreen from './screens/AdminScreen';
 import Wave from 'react-wavify'
 
+export const scroll = new SmoothScroll('a[href*="#"]', {
+  speed: 1000,
+  speedAsDuration: true,
+});
+
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user } = useAuth0();
@@ -31,11 +37,7 @@ function App() {
       dispatch(res);
     }
     );
-    getUsers().then((res) => {
-      dispatch(res);
-    }
-    );
-    
+   
   // eslint-disable-next-line
   }
   , [])

@@ -6,9 +6,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { FiShoppingBag } from "react-icons/fi";
 import icon from '../img/PNG 150 PX.png';
 import styled from 'styled-components';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select,Badge } from '@mui/material';
 import {RiUser6Line, RiUser6Fill} from 'react-icons/ri';
 import { getFilterProducts } from '../redux/actions';
+import {BsInfoCircle} from 'react-icons/bs';
 
 function Navbar({click}) {
     const cart = useSelector(state => state.cart);
@@ -17,6 +18,8 @@ function Navbar({click}) {
     const products = useSelector(state => state.products);
     const dispatch = useDispatch();
     const {loginWithPopup, logout} = useAuth0()
+    const [isHovering, setIsHovering] = React.useState(false);
+    const [valueHovering, setValueHovering] = React.useState("");
 
     const [age, setAge] = React.useState('');
 
@@ -28,25 +31,41 @@ function Navbar({click}) {
         )
     };
 
+    const handleMouseOver = (e) => {
+        setIsHovering(true);
+        setValueHovering(e.target.id)
+    };
+
+    const handleMouseOut = (e) => {
+        setIsHovering(false);
+        setValueHovering("")
+    };
+
   return (
     <nav className='navbar'>
-        <div className='navbar__logo'>
+        <div className='navbar__logo' href='#top'>
             <Link to="/">
                 <Img src={icon} alt="icono" />
             </Link>
         </div>
         <ul className='navbar__links'>
             {!user? null :
-            <li>
-                <Link to="/profile" className='cart__profile'>
-                    <RiUser6Fill />
+            <li onMouseEnter={handleMouseOver} onMouseLeave={handleMouseOut} id="profile">
+                <Link to="/profile" className='cart__profile' id="profile">
+                    <RiUser6Fill id="profile" />
+                    {isHovering && valueHovering ==="profile" && <p>PERFIL</p>}
                 </Link>
             </li>
             }
 
-            <li className='navbar__user'>
-                {!user?<RiUser6Line onClick={()=>loginWithPopup({returnTo:window.location.origin})}/>:<p onClick={logout}><em>Log out</em></p>}
-            </li>
+            {!user?<li className='navbar__user' id="login" onMouseEnter={handleMouseOver} onMouseLeave={handleMouseOut}>
+                <RiUser6Line onClick={()=>loginWithPopup({returnTo:window.location.origin})}/>
+                {isHovering && valueHovering ==="login" && <p onClick={()=>loginWithPopup({returnTo:window.location.origin})}>Iniciar Sesion</p>}
+            </li>:
+                <li className='navbar__user'>
+                    <p onClick={logout}><em>Log out</em></p>
+                </li>
+            }
 
             <li>
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
@@ -68,18 +87,25 @@ function Navbar({click}) {
                 </FormControl>
             </li>
 
-            <li>
-                <Link to="/" className='cart__shop'>
-                    <FiShoppingBag/>
+            <li onMouseEnter={handleMouseOver} onMouseLeave={handleMouseOut} id="contacto">
+                <a href='#contact' id="contacto" className='contacto__nav'>
+                  <BsInfoCircle id="contacto"/>
+                  {isHovering && valueHovering ==="contacto" && <p>NOSOTROS</p>}
+                </a>
+            </li>
+            
+            <li onMouseEnter={handleMouseOver} onMouseLeave={handleMouseOut} id="compras">
+                <Link to="/" className='cart__shop' id="compras">
+                    <FiShoppingBag id="compras"/>
+                    {isHovering && valueHovering ==="compras" && <p>COMPRAS</p>}
                 </Link>
             </li>   
 
             <li>
-                <Link to="/cart" className='cart__link'>
-                    <i className="fas fa-shopping-cart"></i>
-                    <span>
-                        <span className='cartlogo__badge'>{cart?.length}</span>
-                    </span>
+                <Link to="/cart" className='cart__link' id="cart">   
+                    <Badge badgeContent={cart?.length} color="primary">
+                        <i className="fas fa-shopping-cart" id="cart"></i>
+                    </Badge>
                 </Link>
             </li>
         </ul>
