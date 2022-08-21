@@ -9,6 +9,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import { Widget } from "@uploadcare/react-widget";
+
 
 function FormProducts({click, show}) {
 
@@ -16,6 +18,8 @@ function FormProducts({click, show}) {
     const tags = useSelector(state => state.tags);
     const [tag, setTag] = React.useState(tags);
     const [selectedTags, setSelectedTags] = React.useState([]);
+    const [images, setImages] = React.useState([]);
+    const img = [];
 
     const sideDrawerClass = ["formproduct"]
     if (show) {
@@ -26,6 +30,7 @@ function FormProducts({click, show}) {
         return () => {
           setTag(tags)
           setSelectedTags([])
+          setImages([])
         } 
     }
     , []);
@@ -58,6 +63,23 @@ function FormProducts({click, show}) {
             toast.success("Tag created")
         }
     }
+    const handleImageUpload = (e) => {
+        if(e.includes("~")) {
+            let imag = e[e.length - 2]
+            for(let i = 0; i < imag; i++) {
+                img.push(`${e}nth/${i}/`)
+            }
+            console.log(img)
+            setImages(img)
+            toast.success("Imagenes cargadas")
+        }
+        else {
+            setImages(e)
+            toast.success("Imagen cargada")
+        }
+    }
+
+    // ece9c674-654c-419e-9ae0-4312dd6d20b6~1/nth/0/
 
   return ( show &&
     <div className={sideDrawerClass.join(" ")}>
@@ -70,7 +92,6 @@ function FormProducts({click, show}) {
                     productName: '',
                     price: '',
                     countInStock: '',
-                    imageURL: ''
                 }}
                 validate={values => {
                     const errors = {};
@@ -91,11 +112,7 @@ function FormProducts({click, show}) {
                     if (values.countInStock <= 0) {
                         errors.countInStock = 'El stock debe ser mayor a 0';
                     }
-
-                    if (!values.imageURL) {
-                        errors.imageURL = 'Required';
-                    }
-
+        
                     return errors;
                 }}
                 onSubmit={ async (values, { setSubmitting }) => {
@@ -104,11 +121,12 @@ function FormProducts({click, show}) {
                         name: values.productName,
                         price: parseInt(values.price, 10),
                         description: description,
-                        imageURL: values.imageURL,
+                        imageURL: images,
                         countInStock: parseInt(values.countInStock, 10),
                         tags: selectedTags
                     };
-                    if(description !== ""){
+                    console.log(newProduct)
+                    if(description !== "" && images.length > 0) {
                         Swal.fire({
                             title: `Seguro de crear ${newProduct.name} ?`,
                             showDenyButton: true,
@@ -128,6 +146,17 @@ function FormProducts({click, show}) {
                         
                     }
                     else{
+                        if(images.length === 0) {
+                            toast.error("Debe cargar una imagen de referencia", {
+                                position: "top-left",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true}
+                            )
+                        }
+                        if(description === "") {  
                         toast.error("La descripcion no puede estar vacia", {
                             position: "top-left",
                             autoClose: 3000,
@@ -136,6 +165,7 @@ function FormProducts({click, show}) {
                             pauseOnHover: true,
                             draggable: true}
                         )
+                        }
                     }
                 }}
             >
@@ -229,7 +259,7 @@ function FormProducts({click, show}) {
                             helperText="Por favor ingrese el stock del producto"
                             />
                         </Box>
-                        <Box margin={1}>
+                        {/* <Box margin={1}>
                             <Field
                             component={TextField}
                             type="text"
@@ -237,7 +267,16 @@ function FormProducts({click, show}) {
                             label="Imagen"
                             helperText="Por favor ingrese la imagen del producto"
                             />
-                        </Box>
+                        </Box> */}
+                        <Widget 
+                            publicKey="2d33b11f1c07c8c6ffe3" 
+                            dataType="image"
+                            tabs='file url gdrive gphotos'
+                            onChange={(info) => {
+                                handleImageUpload(info.cdnUrl)
+                            }}
+                            multiple={true}
+                        />;
                         <Box margin={1}>
                             <Button
                                 sx={{margin: 1}}

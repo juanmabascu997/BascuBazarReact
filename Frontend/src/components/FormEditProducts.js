@@ -10,6 +10,7 @@ import { TextField} from 'formik-mui';
 import styled from 'styled-components';
 import {FiDelete} from 'react-icons/fi';
 import Swal from 'sweetalert2';
+import { Widget } from "@uploadcare/react-widget";
 
 
 function FormEditProducts({click, show}) {
@@ -19,7 +20,9 @@ function FormEditProducts({click, show}) {
     const tags = useSelector(state => state.tags);
     const [tag, setTag] = React.useState(tags);
     const [selectedTags, setSelectedTags] = React.useState(productToEdit?.tags);
-
+    const [images, setImages] = React.useState(productToEdit?.imageURL);
+    const img = [];
+    
     const sideDrawerClass = ["edit"]
 
     if (show) {
@@ -71,6 +74,28 @@ function FormEditProducts({click, show}) {
         toast.error("Tag removed")
     }
 
+    const handleImageUpload = (e) => {
+        if(e.includes("~")) {
+            let imag = e[e.length - 2]
+            for(let i = 0; i < imag; i++) {
+                img.push(`${e}nth/${i}/`)
+            }
+            console.log(img)
+            setImages(img)
+            toast.success("Imagenes cargadas")
+        }
+        else {
+            setImages(e)
+            toast.success("Imagen cargada")
+        }
+    }
+
+    const handlerDeleteImage = (e) => {
+        setImages(images.filter(img => img !== e))
+        toast.error("Imagen eliminada")
+    }
+
+
   return ( show &&
     <div className={sideDrawerClass.join(" ")}>
         <Button className='closeButton' onClick={click}>
@@ -83,7 +108,6 @@ function FormEditProducts({click, show}) {
                 productName: productToEdit.name,
                 price: productToEdit.price,
                 countInStock: productToEdit.countInStock,
-                imageURL: productToEdit.imageURL
             }}
                 validate={values => {
                     const errors = {};
@@ -105,10 +129,6 @@ function FormEditProducts({click, show}) {
                         errors.countInStock = 'El stock debe ser mayor a 0';
                     }
 
-                    if (!values.imageURL) {
-                        errors.imageURL = 'Required';
-                    }
-
                     return errors;
                 }}
                 onSubmit={ async (values, { setSubmitting }) => {
@@ -116,7 +136,7 @@ function FormEditProducts({click, show}) {
                         name: values.productName,
                         price: parseInt(values.price, 10),
                         description: description,
-                        imageURL: values.imageURL,
+                        imageURL: images,
                         countInStock: parseInt(values.countInStock, 10),
                         tags: selectedTags
                     };
@@ -248,14 +268,30 @@ function FormEditProducts({click, show}) {
                             />
                         </Box>
                         <Box margin={1}>
-                            <Field
-                            component={TextField}
-                            type="text"
-                            name="imageURL"
-                            label="Imagen"
-                            helperText="Por favor ingrese la imagen del producto"
-                            />
+                            {images.length > 0 ?
+                                <div>
+                                    <p>Imagenes del producto:</p>
+                                    {images.map((img, index) => (
+                                        <div key={index}>
+                                            <img src={img} alt="product" width="100" height="100" />
+                                            <FiDelete onClick={() => handlerDeleteImage(img)}/>
+                                        </div>
+                                    ))}
+                                </div>
+                                :
+                                <p>No hay imagenes para mostrar</p>
+                            }
+
                         </Box>
+                        <Widget 
+                            publicKey="2d33b11f1c07c8c6ffe3" 
+                            dataType="image"
+                            tabs='file url gdrive gphotos'
+                            onChange={(info) => {
+                                handleImageUpload(info.cdnUrl)
+                            }}
+                            multiple={true}
+                        />;
                         <Box margin={1}>
                             <Button
                                 sx={{margin: 1}}

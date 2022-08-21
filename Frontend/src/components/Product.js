@@ -42,7 +42,7 @@ function Product({product}) {
 
   return (
     <ProductCard className='product'>
-        <img src={product.imageURL} alt=''/>          
+        <img src={product.imageURL[0]} alt=''/>          
         <div className='product__info'>
             <Name>{product.name}</Name>
             <p className='info__price'>Precio por unidad: ${product.price}</p>
@@ -104,8 +104,8 @@ const ProductCard = styled.div`
 const Name = styled.h2`
     font-size: 1.5rem;
     font-weight: lighter;
+    text-align: center;
     margin-bottom: 10px;
-    overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: wrap;
 `

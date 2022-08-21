@@ -4,9 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getAProduct } from '../redux/actions';
+
+import { Navigation, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from "swiper/react";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
 import './ProductScreen.css';
 import { addCart } from '../redux/actions';
 import styled from 'styled-components';
+
 
 function ProductScreen() {
   const { id } = useParams();
@@ -56,7 +65,34 @@ function ProductScreen() {
     <div className='productscreen'>
       <div className='productscreen__left'>
         <div className='left__image'>
-          <img src={product.imageURL} alt={product.name} />
+          {product.imageURL?.length > 0 ? (
+             <Swiper
+             modules={[Navigation, Pagination]}
+             navigation={true}
+             pagination={true}
+             loop={false}
+             speed={1000}
+             slidesPerView={1}
+             spaceBetween={0}
+             slidesPerColumn={1}
+             slidesPerColumnFill={'column'}
+             centeredSlides={true}
+             paginationClickable={true}
+             paginationBulletRender={(index, className) => (
+               <span className={className}>
+                 {index + 1}
+               </span>
+             )}
+             className='MySwiper'
+           >
+            {product?.imageURL.map(img => 
+              <SwiperSlide className='MySwiper__slide'> <img src={img} alt='img' /></SwiperSlide>
+            )}
+          </Swiper>
+              
+            
+          ) : (
+          <img src={product.imageURL} alt={product.name} loading={"lazy"} />)}
         </div>
         <div className='left__info'>
           <p className='left__name'>{product.name}</p>

@@ -19,18 +19,25 @@ import { useRef } from 'react';
 import {HiOutlineMail, HiOutlineLocationMarker} from 'react-icons/hi'
 import {BsTelephone} from 'react-icons/bs'
 
+
 function Footer() {
     const info = useSelector(state => state.info);
     const [ message , setMessage] = React.useState("")
+    const [ hidden, setHidden ] = React.useState(false)
+
     const form = useRef(null);
 
     const handleChange = (e) => {
         setMessage(e.target.value)
     }
-    
-    const clearState = () => setMessage("")        
+    const clearState = () => setMessage("")     
+
+    useEffect(() => {
+        (window.location.pathname === "/profile" || window.location.pathname === "/adminProfile" )? setHidden(true) : setHidden(false)
+    }, [window.location.pathname])
 
   return (
+    hidden ? null :
     <FooterContainer id='contact'>
             <Container>
                 <div className='contact__email'>
@@ -246,6 +253,7 @@ function Footer() {
 export default Footer
 
 const FooterContainer = styled.div`
+    /* display: ${(window.location.pathname === "/adminProfile" || window.location.pathname === "/profile") ? "none" : "flex"}; */
     display: flex;
     flex-direction: column;
     align-items: center;
