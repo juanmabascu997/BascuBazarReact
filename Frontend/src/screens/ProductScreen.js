@@ -88,11 +88,12 @@ function ProductScreen() {
             {product?.imageURL.map(img => 
               <SwiperSlide className='MySwiper__slide'> <img src={img} alt='img' /></SwiperSlide>
             )}
-          </Swiper>
-              
-            
+          </Swiper>            
           ) : (
-          <img src={product.imageURL} alt={product.name} loading={"lazy"} />)}
+            <div className='left__imgAlone'>
+              <img src={product.imageURL} alt={product.name} loading={"lazy"} />
+            </div>
+          )}
         </div>
         <div className='left__info'>
           <p className='left__name'>{product.name}</p>
