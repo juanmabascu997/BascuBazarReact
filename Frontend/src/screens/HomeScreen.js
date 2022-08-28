@@ -52,12 +52,12 @@ function HomeScreen() {
             <Product product={product} />
           )}
         </div>
-        <Side className='homescreen__sidebar'>
+        {/* <Side className='homescreen__sidebar'>
             <div>
               <h1>Promociones</h1>
               <p>Todas las promos vigentes</p>
             </div>
-        </Side>
+        </Side> */}
       </div>
 
     </div>

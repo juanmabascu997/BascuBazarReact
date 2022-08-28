@@ -17,8 +17,8 @@
 
 .homescreen__productsBody{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 3rem;
     margin-bottom: 1rem;
     margin-left: 15px;
     margin-right: 15px;
@@ -42,7 +42,7 @@
         grid-template-columns: repeat(1, 1fr);
     }
     .homescreen__productsBody{
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: repeat(3,1fr);
     }
     .homescreen__sidebar{
         grid-template-columns: repeat(3,1fr);
@@ -58,7 +58,20 @@
 
 @media (max-width: 671px){
     .homescreen__productsBody{
-        grid-template-columns: repeat(1,1fr);
+        grid-template-columns: repeat(2,1fr);
     }
 }
 
+
+
+@media (max-width: 448px){
+    .homescreen__productsBody{
+        grid-template-columns: repeat(1,0.9fr);
+    }
+}
+
+@media (max-width: 350px){
+    .homescreen__productsBody{
+        grid-template-columns: repeat(1,1fr);
+    }
+}

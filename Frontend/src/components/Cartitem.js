@@ -46,7 +46,7 @@ function Cartitem({product}) {
   return (
     <div className='cartitem'>
         <div className='cartitem__image'>
-            <img src={product.imageURL} alt={product.name} />
+            <img src={product.imageURL[0]} alt={product.name} />
         </div>
         <Link to={`product/${product._id}`} className='cartitem__name'>
             <p>{product.name}</p>

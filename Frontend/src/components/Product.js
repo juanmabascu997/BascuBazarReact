@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addCart } from '../redux/actions';
-import './Product.css';
+// import './Product.css';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
@@ -41,16 +41,21 @@ function Product({product}) {
   }
 
   return (
-    <ProductCard className='product'>
-        <img src={product.imageURL[0]} alt=''/>          
+    <ProductCard>
+        <div className='product__img'>
+          <img src={product.imageURL[0]} alt=''/>          
+        </div>
         <div className='product__info'>
-            <Name>{product.name}</Name>
-            <p className='info__price'>Precio por unidad: ${product.price}</p>
-
-            <Link to={`/product/${product._id}`}>
-                <Button className='css-pvr4uq-MuiButtonBase-root-MuiButton-root'>Ver más</Button>
-            </Link>
-            <Button className='css-h0uqyz-MuiButtonBase-root-MuiButton-root' onClick={addToCarrito}>Añadir | <i className="fas fa-shopping-cart"></i></Button>
+            <div className='ContainerInfo'>
+              <h2>{product.name}</h2>
+              <p className='info__price'>Precio por unidad: ${product.price}</p>
+            </div>
+            <div className='ContainerButton'>
+              <Link to={`/product/${product._id}`}>
+                  Ver más
+              </Link>
+              <Button className='css-h0uqyz-MuiButtonBase-root-MuiButton-root' onClick={addToCarrito}><i className="fas fa-shopping-cart"></i></Button>
+            </div>
         </div>
     </ProductCard>
   )
@@ -59,53 +64,33 @@ function Product({product}) {
 export default Product
 
 const ProductCard = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-    padding: 20px;
-    .product__info{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        padding: 20px;
-        .info__price{
-            font-size: 15px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        a{
-          text-decoration: none;
-          button{
-            margin-bottom: 5px;
-          }
-        }
-    }
+  display: grid;
+  grid-template-rows: repeat(2, 0.6fr);
+  grid-auto-columns: auto;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  align-items: end;
+  align-content: space-between;
+  padding: 20px;
+  .product__img{
     img{
-        width: 100%;
-        height: 200px;
-        border-radius: 10px;
+      border-radius: 10px;
     }
-    &:hover{
-        box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+  }
+  .product__info{
+    .ContainerInfo{
+      margin-bottom: 20px;
     }
+    .ContainerButton{
 
-`
+      a{
+        text-decoration: none;
+      }
+    }
+  }
 
-const Name = styled.h2`
-    font-size: 1.5rem;
-    font-weight: lighter;
-    text-align: center;
-    margin-bottom: 10px;
-    text-overflow: ellipsis;
-    white-space: wrap;
+  &:hover{
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+  }
 `

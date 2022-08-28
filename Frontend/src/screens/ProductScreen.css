@@ -135,3 +135,9 @@
         align-self: center;
     }
 }
+
+@media (max-width: 557px){
+    .left__image{
+        width: auto;
+    }
+}
