@@ -83,6 +83,8 @@ const ProductCard = styled.div`
       margin-bottom: 20px;
     }
     .ContainerButton{
+      margin-left: 15px;
+      margin-right: 10px;
 
       a{
         text-decoration: none;
