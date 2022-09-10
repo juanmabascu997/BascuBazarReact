@@ -9,7 +9,7 @@ class PaymentService {
             id: item._id,
             title: item.name,
             description: item.description,
-            picture_url: item.imageURL,
+            picture_url: item.imageURL[0],
             quantity: item.quantity,
             currency_id: "ARS",
             unit_price: item.price,

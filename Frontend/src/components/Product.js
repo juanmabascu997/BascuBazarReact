@@ -83,11 +83,15 @@ const ProductCard = styled.div`
       margin-bottom: 20px;
     }
     .ContainerButton{
-      margin-left: 15px;
-      margin-right: 10px;
-
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
       a{
         text-decoration: none;
+        color: #3f4e8f;
+        margin-right: 10px;
+
       }
     }
   }

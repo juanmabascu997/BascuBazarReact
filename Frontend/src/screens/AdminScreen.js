@@ -12,6 +12,7 @@ import {BiArchiveIn} from 'react-icons/bi';
 import Swal from 'sweetalert2';
 import BuyScreens from './AdminScreens/BuyScreens';
 import StadisticScreen from './AdminScreens/StadisticScreen';
+import {RiUser6Line} from 'react-icons/ri';
 
 function AdminScreen() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -105,7 +106,7 @@ function AdminScreen() {
                 <h1>Usuarios</h1>
                 <Lista>
                     {allUsers.map(usr => {
-                        return <li>{usr.name}</li>
+                        return <li><RiUser6Line/>{usr.name}</li>
                     }
                     )}
                 </Lista>

@@ -67,7 +67,7 @@ function Navbar({click}) {
                 </li>
             }
 
-            <li>
+            <Li>
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
                     <InputLabel id="demo-simple-select-standard-label">Filtros: </InputLabel>
                     <Select
@@ -85,7 +85,7 @@ function Navbar({click}) {
                         ))}
                     </Select>
                 </FormControl>
-            </li>
+            </Li>
 
             <li onMouseEnter={handleMouseOver} onMouseLeave={handleMouseOut} id="contacto">
                 <a href='#contact' id="contacto" className='contacto__nav'>
@@ -125,4 +125,26 @@ const Img = styled.img`
     width: 100%;
     height: 100%;
     margin: 0;
+`
+
+const Li = styled.li`
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    div{
+        label{
+            color: #222222;
+            font-family: 'Bebas Neue';
+            font-weight: lighter;
+        }
+        div{
+            div{
+                color: #222222;
+                font-family: 'Bebas Neue';
+                font-weight: lighter;
+
+            }
+        }
+    }
+
 `

@@ -17,3 +17,8 @@ img{
     width: 100%;
     object-fit: contain;
 }
+.css-6hp17o-MuiList-root-MuiMenu-list > li{   
+        color: #222222 !important;
+        font-family: 'Bebas Neue' !important;
+        font-weight: lighter !important;
+}
