@@ -10,6 +10,7 @@ import { FormControl, InputLabel, MenuItem, Select,Badge } from '@mui/material';
 import {RiUser6Line, RiUser6Fill} from 'react-icons/ri';
 import { getFilterProducts } from '../redux/actions';
 import {BsInfoCircle} from 'react-icons/bs';
+import Tooltip from '@mui/material/Tooltip';
 
 function Navbar({click}) {
     const cart = useSelector(state => state.cart);
@@ -52,24 +53,30 @@ function Navbar({click}) {
             {!user? null :
             <li onMouseEnter={handleMouseOver} onMouseLeave={handleMouseOut} id="profile">
                 <Link to="/profile" className='cart__profile' id="profile">
-                    <RiUser6Fill id="profile" />
-                    {isHovering && valueHovering ==="profile" && <p>PERFIL</p>}
+                    <Tooltip title="Perfil" arrow>
+                        <RiUser6Fill id="profile" />
+                    </Tooltip>
                 </Link>
             </li>
             }
 
-            {!user?<li className='navbar__user' id="login" onMouseEnter={handleMouseOver} onMouseLeave={handleMouseOut}>
-                <RiUser6Line onClick={()=>loginWithPopup({returnTo:window.location.origin})}/>
-                {isHovering && valueHovering ==="login" && <p onClick={()=>loginWithPopup({returnTo:window.location.origin})}>Iniciar Sesion</p>}
-            </li>:
+            {!user?
+                <li className='navbar__user' id="login" onMouseEnter={handleMouseOver} onMouseLeave={handleMouseOut}>
+                    <Tooltip title="Iniciar sesion" arrow>
+                        <RiUser6Line onClick={()=>loginWithPopup({returnTo:window.location.origin})}/>
+                    </Tooltip>
+                </li>
+            :
                 <li className='navbar__user'>
-                    <p onClick={logout}><em>Log out</em></p>
+                    <Tooltip title="Cerrar sesion" arrow>
+                        <p onClick={logout}><em>Log out</em></p>
+                    </Tooltip>
                 </li>
             }
 
             <Li>
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel id="demo-simple-select-standard-label">Filtros: </InputLabel>
+                    <InputLabel id="demo-simple-select-standard-label">Categorias: </InputLabel>
                     <Select
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
@@ -89,23 +96,28 @@ function Navbar({click}) {
 
             <li onMouseEnter={handleMouseOver} onMouseLeave={handleMouseOut} id="contacto">
                 <a href='#contact' id="contacto" className='contacto__nav'>
-                  <BsInfoCircle id="contacto"/>
-                  {isHovering && valueHovering ==="contacto" && <p>NOSOTROS</p>}
+                    <Tooltip title="Nosotros" arrow>
+                        <BsInfoCircle id="contacto"/>
+                    </Tooltip>
                 </a>
             </li>
             
             <li onMouseEnter={handleMouseOver} onMouseLeave={handleMouseOut} id="compras">
                 <Link to="/" className='cart__shop' id="compras">
-                    <FiShoppingBag id="compras"/>
-                    {isHovering && valueHovering ==="compras" && <p>COMPRAS</p>}
+                    <Tooltip title="Comprar" arrow>
+                        <FiShoppingBag id="compras"/>
+                    </Tooltip>
                 </Link>
             </li>   
 
             <li>
                 <Link to="/cart" className='cart__link' id="cart">   
-                    <Badge badgeContent={cart?.length} color="primary">
-                        <i className="fas fa-shopping-cart" id="cart"></i>
-                    </Badge>
+                    <Tooltip title="Carrito" arrow>
+                        <Badge badgeContent={cart?.length} color="primary">
+                            <i className="fas fa-shopping-cart" id="cart"></i>
+                        </Badge>
+                    </Tooltip>
+                    
                 </Link>
             </li>
         </ul>

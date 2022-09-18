@@ -33,7 +33,7 @@ function Footer() {
     const clearState = () => setMessage("")     
 
     useEffect(() => {
-        (window.location.pathname === "/profile" || window.location.pathname === "/adminProfile" )? setHidden(true) : setHidden(false)
+        (window.location.pathname === "/profile" || window.location.pathname === "/adminProfile" || window.location.pathname === "/cart" )? setHidden(true) : setHidden(false)
     }, [window.location.pathname])
 
   return (

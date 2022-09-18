@@ -65,11 +65,12 @@ function CartScreen() {
   return (
     <div className='cartscreen'>
       <div className='cartscreen__left'>
-        <h1>Compras</h1>
-        {cartItems?.map((product) => {
+        <h1>Productos en carrito</h1>
+        {cartItems.length > 0 ?cartItems.map((product) => {
             return <div className='item__container'>
               <Cartitem product={product} />
             </div>})
+            : <p>Tu carrito de compras esta vacio </p>
         }
       </div>
       <div className='cartscreen__rigth'>
